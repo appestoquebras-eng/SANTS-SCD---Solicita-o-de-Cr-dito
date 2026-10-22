@@ -17,7 +17,7 @@ export function MeasurementConsent() {
   };
   return open ? (
     <aside
-      className="bg-slate-950 border-t border-slate-700 p-4 text-slate-200 text-sm"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-slate-950 border-t border-slate-700 p-4 text-slate-200 text-sm shadow-2xl"
       aria-label="Preferências de medição"
     >
       <div className="max-w-4xl mx-auto flex flex-wrap items-center gap-3">
