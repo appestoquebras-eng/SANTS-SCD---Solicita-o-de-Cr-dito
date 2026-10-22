@@ -1,6 +1,7 @@
 import React from 'react';
 import { Building, ShieldCheck, MapPin, CheckCircle } from 'lucide-react';
 import { INSTITUTIONAL_DATA } from '../config/creditConfig';
+import architectureImage from '../assets/images/sants_finance_architecture_1792677055208.jpg';
 
 export const AboutSants: React.FC = () => {
   return (
@@ -68,7 +69,7 @@ export const AboutSants: React.FC = () => {
           <div className="lg:col-span-5">
             <div className="relative rounded-2xl overflow-hidden border border-slate-200 shadow-lg bg-slate-100">
               <img
-                src="/src/assets/images/sants_finance_architecture_1792677055208.jpg"
+                src={architectureImage}
                 alt="Edifício Corporativo Institucional SANTS SCD"
                 className="w-full h-72 sm:h-80 object-cover"
                 referrerPolicy="no-referrer"
