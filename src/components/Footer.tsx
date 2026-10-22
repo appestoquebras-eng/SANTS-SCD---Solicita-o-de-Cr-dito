@@ -107,8 +107,7 @@ export const Footer: React.FC<FooterProps> = ({
               <div>
                 <span className="text-slate-500 block text-[11px]">WhatsApp Oficial:</span>
                 <a
-                  href={`https://wa.me/${whatsappNumber.replace(/\D/g, '')}`}
-                  target="_blank"
+                  href="#simulador"
                   rel="noopener noreferrer"
                   className="text-slate-200 hover:text-emerald-400 font-mono transition-colors inline-block"
                 >
@@ -132,16 +131,7 @@ export const Footer: React.FC<FooterProps> = ({
                   Contato & Início de Solicitação ↑
                 </a>
               </div>
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={onOpenConfig}
-                  className="inline-flex items-center gap-1.5 text-[11px] text-slate-400 hover:text-blue-400 border border-slate-800 hover:border-slate-700 rounded-lg px-2.5 py-1.5 transition-colors cursor-pointer"
-                >
-                  <Settings className="w-3.5 h-3.5" />
-                  <span>Configurar Contato</span>
-                </button>
-              </div>
+
             </div>
           </div>
 

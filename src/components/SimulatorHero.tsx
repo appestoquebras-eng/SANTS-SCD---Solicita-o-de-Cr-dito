@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { User, Building2, AlertCircle, ShieldCheck, Calculator } from 'lucide-react';
 import {
   SIMULATOR_CONFIG,
   CREDIT_CONFIG,
   formatCurrencyBRL,
   formatCurrencyExactBRL,
-  getActiveWhatsAppNumber,
   calculateMonthlyPayment,
   getMaximumAllowedTerm,
 } from '../config/creditConfig';
 import { trackEvent } from '../utils/tracking';
+import { goToWhatsApp, initVisitor } from '../utils/atendimento';
 
 interface SimulatorHeroProps {
   onOpenPrivacy: () => void;
@@ -26,7 +26,9 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
 
   // Checkbox de consentimento marcado como padrão (sempre ativo)
   const [agreedPrivacy, setAgreedPrivacy] = useState<boolean>(true);
-  const [showConfigNotice, setShowConfigNotice] = useState<boolean>(false);
+  const [routing, setRouting] = useState(false);
+  const routingRef = useRef(false);
+  useEffect(() => { initVisitor().catch(() => {}); }, []);
   const [validationError, setValidationError] = useState<string | null>(null);
 
   const currentConfig = SIMULATOR_CONFIG[profile];
@@ -139,7 +141,9 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
   };
 
   // Validação estrita e abertura do canal de WhatsApp com dados oficiais
-  const handleWhatsAppClick = (e: React.MouseEvent) => {
+  const handleWhatsAppClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (routingRef.current) return;
     setValidationError(null);
 
     // 1. Validação de consentimento
@@ -178,33 +182,16 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
       return;
     }
 
-    const currentNumber = getActiveWhatsAppNumber();
-
-    // Se o número ainda não tiver sido preenchido
-    if (!currentNumber || currentNumber.trim().length < 8) {
-      e.preventDefault();
-      setShowConfigNotice(true);
-      return;
-    }
-
-    trackEvent('whatsapp_click', {
-      profile,
-      amount,
-      term,
-      estimated_payment: estimatedPayment,
-    });
-
     const profileText = profile === 'PF' ? 'Pessoa Física' : 'Pessoa Jurídica';
     const formattedAmount = formatCurrencyBRL(amount);
     const formattedPayment = formatCurrencyExactBRL(estimatedPayment);
 
     const message = `Olá! Vim pelo site da SANTS e gostaria de iniciar uma solicitação para análise de crédito.\n\nPerfil: ${profileText}\nValor de interesse: ${formattedAmount}\nPrazo selecionado: ${term} meses\nParcela mensal estimada: ${formattedPayment}\n\nEstou ciente de que esta é uma estimativa e que a solicitação está sujeita à análise. Taxas, CET, custos, valores e condições definitivas podem variar.`;
 
-    const encodedMessage = encodeURIComponent(message);
-    const cleanNumber = currentNumber.replace(/\D/g, '');
-    const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodedMessage}`;
-
-    window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+    routingRef.current = true; setRouting(true);
+    try { await goToWhatsApp(message); }
+    catch (err) { setValidationError(err instanceof Error ? err.message : 'Não foi possível encaminhar. Tente novamente.'); }
+    finally { routingRef.current = false; setRouting(false); }
   };
 
   return (
@@ -428,7 +415,7 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
           {/* ================================================================= */}
           <button
             type="button"
-            disabled={!agreedPrivacy}
+            disabled={!agreedPrivacy || routing}
             onClick={handleWhatsAppClick}
             className={`w-full py-3.5 px-5 rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2.5 transition-all duration-200 cursor-pointer shadow-lg ${
               agreedPrivacy
@@ -444,7 +431,7 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
             >
               <path d="M12.031 2C6.516 2 2.025 6.491 2.025 12.006c0 1.93.551 3.734 1.508 5.263L2.002 22l4.898-1.503a9.96 9.96 0 0 0 5.131 1.517c5.515 0 10.006-4.491 10.006-10.008C22.037 6.491 17.546 2 12.031 2zm0 18.232c-1.637 0-3.153-.473-4.437-1.285l-.318-.201-2.923.898.908-2.854-.207-.328A8.19 8.19 0 0 1 3.82 12.006C3.82 7.481 7.498 3.803 12.031 3.803c4.533 0 8.211 3.678 8.211 8.203 0 4.525-3.678 8.226-8.211 8.226zm4.502-6.149c-.247-.124-1.463-.722-1.69-.805-.227-.082-.392-.124-.557.124-.165.247-.64 1.052-.784 1.217-.144.165-.289.186-.536.062-.247-.124-1.043-.385-1.986-1.226-.734-.655-1.23-1.464-1.374-1.711-.144-.247-.015-.38.109-.504.111-.111.247-.289.371-.433.124-.144.165-.247.247-.412.082-.165.041-.309-.021-.433-.062-.124-.557-1.34-.763-1.835-.2-.482-.404-.417-.557-.425l-.474-.008c-.165 0-.433.062-.66.309-.227.247-.866.845-.866 2.062 0 1.216.887 2.392 1.01 2.557.124.165 1.745 2.665 4.227 3.738.591.255 1.052.408 1.412.522.593.188 1.134.161 1.56.098.476-.071 1.463-.598 1.669-1.175.206-.577.206-1.072.144-1.175-.062-.103-.227-.165-.474-.289z" />
             </svg>
-            <span>Continuar pelo WhatsApp</span>
+            <span>{routing ? 'Encaminhando…' : 'Continuar pelo WhatsApp'}</span>
           </button>
 
           {!agreedPrivacy && (
@@ -470,58 +457,6 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
           </div>
         </div>
 
-        {/* Modal / Dialog quando o número de WhatsApp precisa ser configurado localmente */}
-        {showConfigNotice && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150">
-            <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 text-slate-200 shadow-2xl">
-              <div className="flex items-center gap-3 text-amber-400 mb-3">
-                <AlertCircle className="w-6 h-6 shrink-0" />
-                <h3 className="text-base font-bold text-white">Configuração do WhatsApp</h3>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-300 mb-4 leading-relaxed">
-                O número de atendimento ainda não foi configurado em <code className="text-blue-300 font-mono text-xs">src/config/creditConfig.ts</code>.
-              </p>
-              <p className="text-xs text-slate-400 mb-5">
-                Insira o número oficial com DDI e DDD (ex: 5511999999999) para prosseguir:
-              </p>
-              
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Ex: 5511999998888 (com DDI e DDD)"
-                  id="quick-whatsapp-input"
-                  className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 font-mono"
-                />
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const input = document.getElementById('quick-whatsapp-input') as HTMLInputElement;
-                      if (input && input.value.trim()) {
-                        localStorage.setItem('sants_override_whatsapp', input.value.trim());
-                        setShowConfigNotice(false);
-                        setTimeout(() => {
-                          const fakeEvent = { preventDefault: () => {} } as any;
-                          handleWhatsAppClick(fakeEvent);
-                        }, 100);
-                      }
-                    }}
-                    className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-semibold py-2 px-3 rounded-lg text-xs transition-colors cursor-pointer"
-                  >
-                    Salvar e Abrir WhatsApp
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowConfigNotice(false)}
-                    className="bg-slate-800 hover:bg-slate-700 text-slate-300 font-medium py-2 px-3 rounded-lg text-xs transition-colors cursor-pointer"
-                  >
-                    Fechar
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
       </div>
     </section>

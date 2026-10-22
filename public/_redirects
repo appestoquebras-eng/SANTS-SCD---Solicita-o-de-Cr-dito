@@ -1,5 +1,1 @@
-/politica-de-privacidade.html /politica-de-privacidade.html 200
-/termos-de-uso.html /termos-de-uso.html 200
-/robots.txt /robots.txt 200
-/sitemap.xml /sitemap.xml 200
-/* /index.html 200
+# SPA routing uses the default Cloudflare Pages fallback (no top-level 404.html).

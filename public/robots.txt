@@ -2,3 +2,6 @@ User-agent: *
 Allow: /
 
 Sitemap: https://santscredito.online/sitemap.xml
+
+Disallow: /painel
+Disallow: /api/
