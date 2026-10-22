@@ -18,6 +18,8 @@ export type TrackingEventName =
   | 'profile_selected'
   | 'amount_changed'
   | 'loan_amount_changed'
+  | 'term_changed'
+  | 'payment_estimate_calculated'
   | 'privacy_accepted'
   | 'whatsapp_click'
   | 'application_started'
@@ -34,6 +36,12 @@ export function trackEvent(eventName: TrackingEventName, payload?: Record<string
       if (typeof payload.amount === 'number') {
         safePayload.amount = payload.amount;
         safePayload.currency = 'BRL';
+      }
+      if (typeof payload.term === 'number') {
+        safePayload.term = payload.term;
+      }
+      if (typeof payload.estimated_payment === 'number') {
+        safePayload.estimated_payment = Math.round(payload.estimated_payment * 100) / 100;
       }
     }
 
