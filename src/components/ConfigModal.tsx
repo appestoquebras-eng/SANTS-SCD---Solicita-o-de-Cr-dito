@@ -100,7 +100,7 @@ export const ConfigModal: React.FC<ConfigModalProps> = ({ isOpen, onClose, onSav
               className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs sm:text-sm"
             />
             <p className="text-[11px] text-slate-400 mt-1">
-              Valor padrão no código: <span className="font-mono">{DEFAULT_WHATSAPP_NUMBER}</span>
+              Configure o número do WhatsApp com DDI (55) e DDD da sua operação.
             </p>
           </div>
 
@@ -117,7 +117,7 @@ export const ConfigModal: React.FC<ConfigModalProps> = ({ isOpen, onClose, onSav
               className="w-full px-3.5 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-xs sm:text-sm"
             />
             <p className="text-[11px] text-slate-400 mt-1">
-              Valor padrão no código: <span className="font-mono">{DEFAULT_CONTACT_EMAIL}</span>
+              Configure o e-mail institucional oficial de atendimento aos clientes.
             </p>
           </div>
 

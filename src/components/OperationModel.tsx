@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building, Shield, Info } from 'lucide-react';
+import { Shield, Info } from 'lucide-react';
 import { INSTITUTIONAL_DATA } from '../config/creditConfig';
 
 export const OperationModel: React.FC = () => {
@@ -17,24 +17,28 @@ export const OperationModel: React.FC = () => {
                 Modelo da Operação
               </span>
               <h3 className="text-lg sm:text-xl font-bold text-slate-950">
-                Atendimento e Geração de Solicitação
+                Atendimento e Início de Solicitação
               </h3>
             </div>
           </div>
 
           <div className="space-y-3.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
             <p>
-              Por meio deste site, o usuário manifesta interesse em uma operação de crédito e fornece as informações necessárias para o início do atendimento. A solicitação poderá passar por análise de elegibilidade e crédito antes da apresentação de qualquer proposta ou contratação.
+              Por meio deste site, o usuário manifesta interesse em uma operação de crédito e inicia uma solicitação para análise. A aprovação, os valores disponíveis, as taxas, o prazo e demais condições dependem dos critérios aplicáveis à operação.
             </p>
 
             <p>
-              Dependendo da operação, a análise e/ou contratação poderá envolver instituição financeira parceira devidamente habilitada, que será identificada ao usuário antes da contratação.
+              Dependendo da modalidade e da operação, a solicitação poderá ser analisada e/ou contratada por instituição financeira parceira devidamente habilitada. A instituição responsável será identificada ao cliente antes da contratação.
+            </p>
+
+            <p>
+              Quando necessário para atendimento da solicitação, os dados poderão ser compartilhados com instituições financeiras ou parceiros envolvidos na análise, formalização ou atendimento da operação, conforme descrito na Política de Privacidade e observada a legislação aplicável.
             </p>
 
             <div className="pt-3 border-t border-slate-100 mt-4 flex items-start gap-2.5 text-xs text-slate-600 bg-slate-50/70 p-3.5 rounded-xl">
               <Shield className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
               <span>
-                <strong className="text-slate-800">Nota Regulatória:</strong> A autorização outorgada pelo Banco Central do Brasil para atuar como Sociedade de Crédito Direto aplica-se exclusivamente à <strong className="text-slate-900">{INSTITUTIONAL_DATA.legalName}</strong> (CNPJ {INSTITUTIONAL_DATA.cnpj}), nos termos da legislação brasileira vigente.
+                <strong className="text-slate-800">Nota Regulatória:</strong> A autorização outorgada pelo Banco Central do Brasil para atuar como Sociedade de Crédito Direto aplica-se exclusivamente à <strong className="text-slate-900">{INSTITUTIONAL_DATA.legalName}</strong> (CNPJ {INSTITUTIONAL_DATA.cnpj}), nos termos da regulamentação aplicável.
               </span>
             </div>
           </div>

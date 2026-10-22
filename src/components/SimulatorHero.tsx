@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { User, Building2, MessageCircle, AlertCircle, ShieldCheck } from 'lucide-react';
+import { User, Building2, AlertCircle, ShieldCheck } from 'lucide-react';
 import {
   SIMULATOR_CONFIG,
   INSTITUTIONAL_DATA,
@@ -16,13 +16,19 @@ interface SimulatorHeroProps {
 export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onOpenConfig }) => {
   const [profile, setProfile] = useState<'PF' | 'PJ'>('PF');
   const [amount, setAmount] = useState<number>(SIMULATOR_CONFIG.PF.defaultAmount);
-  const [agreedPrivacy, setAgreedPrivacy] = useState<boolean>(true);
+  // Não pré-selecionado por padrão para compliance estrito com privacidade e TikTok Ads
+  const [agreedPrivacy, setAgreedPrivacy] = useState<boolean>(false);
   const [showConfigNotice, setShowConfigNotice] = useState<boolean>(false);
 
   const currentConfig = SIMULATOR_CONFIG[profile];
 
-  // Disparar evento quando o simulador carrega pela primeira vez
+  // Disparar eventos quando o simulador carrega
   useEffect(() => {
+    trackEvent('page_view');
+    trackEvent('application_started', {
+      profile,
+      amount,
+    });
     trackEvent('simulation_started', {
       profile,
       amount,
@@ -39,7 +45,6 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
     } else if (newAmount > targetConfig.maxAmount) {
       newAmount = targetConfig.maxAmount;
     } else {
-      // Ajusta para o múltiplo mais próximo do step
       newAmount = Math.round(newAmount / targetConfig.step) * targetConfig.step;
     }
     setAmount(newAmount);
@@ -52,6 +57,10 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
 
   const handleAmountChange = (newVal: number) => {
     setAmount(newVal);
+    trackEvent('amount_changed', {
+      profile,
+      amount: newVal,
+    });
     trackEvent('loan_amount_changed', {
       profile,
       amount: newVal,
@@ -68,14 +77,14 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
     }
   };
 
-  // Construir link dinâmico do WhatsApp
+  // Construir link dinâmico do WhatsApp com mensagens oficiais
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     if (!agreedPrivacy) return;
 
     const currentNumber = getActiveWhatsAppNumber();
     
-    // Se ainda estiver com o placeholder padrão e não for um número válido
-    if (!currentNumber || currentNumber.includes('[') || currentNumber.length < 8) {
+    // Se o número ainda não tiver sido preenchido
+    if (!currentNumber || currentNumber.trim().length < 8) {
       e.preventDefault();
       setShowConfigNotice(true);
       return;
@@ -84,16 +93,14 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
     trackEvent('whatsapp_click', {
       profile,
       amount,
-      whatsapp_number: currentNumber,
     });
 
     const profileText = profile === 'PF' ? 'Pessoa Física' : 'Pessoa Jurídica';
     const formattedAmount = formatCurrencyBRL(amount);
 
-    const message = `Olá! Vim pelo site da SANTS e gostaria de solicitar uma análise de crédito.\n\nPerfil: ${profileText}\nValor de interesse: ${formattedAmount}\n\nEstou ciente de que a solicitação está sujeita à análise e que valores, taxas e condições podem variar.`;
+    const message = `Olá! Vim pelo site da SANTS e gostaria de iniciar uma solicitação para análise de crédito.\n\nPerfil: ${profileText}\nValor de interesse: ${formattedAmount}\n\nEstou ciente de que a solicitação está sujeita à análise e que valores, taxas, prazos e demais condições podem variar.`;
 
     const encodedMessage = encodeURIComponent(message);
-    // Limpar qualquer caractere não numérico para o wa.me
     const cleanNumber = currentNumber.replace(/\D/g, '');
     const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodedMessage}`;
 
@@ -108,11 +115,11 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
 
       <div className="relative max-w-4xl mx-auto px-4 sm:px-6">
         
-        {/* Regulatory Banner Pill-Free */}
+        {/* Informação Institucional e Regulatória */}
         <div className="flex items-center justify-center gap-2 mb-4 sm:mb-6 text-center">
           <ShieldCheck className="w-4 h-4 text-blue-400 shrink-0" />
           <p className="text-xs sm:text-sm text-slate-300 font-medium">
-            Instituição autorizada pelo <span className="text-white font-semibold">Banco Central do Brasil</span> · SCD ativa
+            Instituição autorizada pelo <span className="text-white font-semibold">Banco Central do Brasil</span> a atuar como SCD
           </p>
         </div>
 
@@ -124,8 +131,8 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
           <p className="text-sm sm:text-base text-slate-300 font-normal">
             Escolha seu perfil e o valor de interesse para iniciar sua solicitação.
           </p>
-          <p className="text-xs text-slate-400 mt-1.5 font-light">
-            Valores e condições estão sujeitos à análise de crédito, disponibilidade e critérios aplicáveis.
+          <p className="text-xs sm:text-sm text-slate-400 mt-1.5 font-light">
+            Valores, disponibilidade, taxas, prazos e demais condições dependem da modalidade e da análise aplicável.
           </p>
         </div>
 
@@ -185,7 +192,7 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
                 {formatCurrencyBRL(amount)}
               </div>
               <p className="text-xs text-slate-400 mt-1">
-                Faixa disponível para consulta {profile === 'PF' ? 'PF (R$ 1.000 a R$ 50.000)' : 'PJ (R$ 5.000 a R$ 100.000)'}
+                Faixa disponível para consulta: {profile === 'PF' ? 'Pessoa Física (R$ 1.000 a R$ 50.000)' : 'Pessoa Jurídica (R$ 5.000 a R$ 100.000)'}
               </p>
             </div>
 
@@ -236,7 +243,7 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
             </div>
           </div>
 
-          {/* Consent Checkbox (Strictly Mandatory & Unchecked by default) */}
+          {/* Consent Checkbox (Obrigatório e não pré-selecionado) */}
           <div className="mb-6">
             <label className="flex items-start gap-3 cursor-pointer select-none group text-left">
               <input
@@ -247,7 +254,7 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
                 id="privacy-consent"
               />
               <span className="text-xs sm:text-sm text-slate-300 group-hover:text-white leading-relaxed">
-                Li e concordo com a{' '}
+                Li a{' '}
                 <button
                   type="button"
                   onClick={(e) => {
@@ -259,7 +266,7 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
                 >
                   Política de Privacidade
                 </button>{' '}
-                e autorizo o tratamento dos meus dados para atendimento da minha solicitação, conforme descrito na Política de Privacidade.
+                e autorizo o tratamento dos meus dados para atendimento desta solicitação, conforme descrito na Política de Privacidade.
               </span>
             </label>
           </div>
@@ -293,18 +300,18 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
             </p>
           )}
 
-          {/* Clear Disclaimer under CTA */}
-          <div className="mt-5 pt-4 border-t border-slate-700/60 text-center space-y-1">
-            <p className="text-xs text-slate-400 leading-normal">
-              Esta solicitação não representa aprovação de crédito. A contratação está sujeita à análise, critérios de elegibilidade e condições vigentes.
+          {/* Aviso Financeiro Próximo ao Simulador */}
+          <div className="mt-5 pt-4 border-t border-slate-700/60 text-center space-y-1.5">
+            <p className="text-xs sm:text-sm text-slate-300 leading-normal">
+              A solicitação não representa aprovação ou garantia de crédito. Valores, taxas, prazos e demais condições estão sujeitos à modalidade, critérios de elegibilidade e análise aplicável.
             </p>
-            <p className="text-xs text-slate-400 font-medium">
-              Produto destinado a maiores de 18 anos.
+            <p className="text-xs sm:text-sm text-slate-400 font-medium">
+              Produto destinado exclusivamente a maiores de 18 anos.
             </p>
           </div>
         </div>
 
-        {/* Modal / Dialog when WhatsApp number needs configuration */}
+        {/* Modal / Dialog quando o número de WhatsApp precisa ser configurado */}
         {showConfigNotice && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150">
             <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 text-slate-200 shadow-2xl">
@@ -313,10 +320,10 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
                 <h3 className="text-base font-bold text-white">Configuração do WhatsApp</h3>
               </div>
               <p className="text-xs sm:text-sm text-slate-300 mb-4 leading-relaxed">
-                O número de atendimento ainda está configurado como <code className="bg-slate-800 px-1 py-0.5 rounded text-amber-300 font-mono text-xs">[COLOCAR NÚMERO CORRETO]</code> em <code className="text-blue-300 font-mono text-xs">src/config/creditConfig.ts</code>.
+                O número de atendimento ainda não foi configurado em <code className="text-blue-300 font-mono text-xs">src/config/creditConfig.ts</code>.
               </p>
               <p className="text-xs text-slate-400 mb-5">
-                Você pode inserir um número com DDD para testar o envio imediatamente agora mesmo:
+                Insira o número oficial com DDI e DDD (ex: 5511999999999) para prosseguir:
               </p>
               
               <div className="space-y-3">
@@ -325,7 +332,6 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
                   placeholder="Ex: 5511999998888 (com DDI e DDD)"
                   id="quick-whatsapp-input"
                   className="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 font-mono"
-                  defaultValue="5511999998888"
                 />
                 <div className="flex gap-2">
                   <button
@@ -335,7 +341,6 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
                       if (input && input.value.trim()) {
                         localStorage.setItem('sants_override_whatsapp', input.value.trim());
                         setShowConfigNotice(false);
-                        // Agora simula o clique com o novo número
                         setTimeout(() => {
                           const fakeEvent = { preventDefault: () => {} } as any;
                           handleWhatsAppClick(fakeEvent);

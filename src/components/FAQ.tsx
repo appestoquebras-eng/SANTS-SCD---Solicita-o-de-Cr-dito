@@ -8,32 +8,42 @@ export const FAQ: React.FC = () => {
     {
       question: 'O envio da solicitação garante aprovação?',
       answer:
-        'Não. Toda solicitação está sujeita à análise e aos critérios aplicáveis. O envio do interesse não representa aprovação prévia nem obriga a contratação do crédito.',
+        'Não. O envio da solicitação não representa aprovação ou garantia de crédito. A disponibilidade depende da modalidade, critérios de elegibilidade e análise aplicável.',
     },
     {
       question: 'Qual valor posso solicitar?',
       answer:
-        'Para Pessoa Física, o site permite indicar valores de interesse entre R$ 1.000 e R$ 50.000. Para Pessoa Jurídica, entre R$ 5.000 e R$ 100.000. A disponibilidade efetiva dependerá da análise de capacidade de pagamento e perfil cadastral.',
+        'O site permite indicar valores de interesse conforme o perfil selecionado. Para Pessoa Física, de R$ 1.000 a R$ 50.000; para Pessoa Jurídica, de R$ 5.000 a R$ 100.000. A disponibilidade efetiva depende da análise.',
     },
     {
-      question: 'Quando saberei as taxas e condições?',
+      question: 'Qual é a taxa de juros?',
       answer:
-        'As taxas, custos, prazos e demais condições aplicáveis deverão ser apresentados de maneira clara antes de qualquer contratação, discriminados na proposta formal e Cédula de Crédito Bancário.',
+        'As taxas podem partir de 1,35% ao mês, equivalente a aproximadamente 17,46% ao ano. A taxa efetivamente disponibilizada pode variar conforme modalidade, perfil e análise.',
+    },
+    {
+      question: 'Qual é o prazo?',
+      answer:
+        'O prazo pode variar de 6 a 120 meses, conforme modalidade, perfil e condições disponibilizadas.',
+    },
+    {
+      question: 'O que é CET?',
+      answer:
+        'O Custo Efetivo Total reúne os custos da operação de crédito. O CET aplicável será apresentado ao cliente de forma clara antes da contratação.',
+    },
+    {
+      question: 'Quando saberei as condições finais?',
+      answer:
+        'As condições da proposta, incluindo taxa, prazo, parcelas, CET e custos aplicáveis, serão apresentadas antes da contratação.',
+    },
+    {
+      question: 'Quem realiza a análise?',
+      answer:
+        'A solicitação seguirá os procedimentos de análise aplicáveis à operação. Caso haja participação de instituição financeira parceira, a responsável pela contratação será identificada antes da formalização.',
     },
     {
       question: 'Tenho que pagar alguma coisa antecipadamente?',
       answer:
         'Não. A SANTS SCD não solicita depósitos prévios, taxas de avalista, adiantamentos ou fiadores como condição para liberação de empréstimo. Qualquer cobrança antecipada não faz parte dos procedimentos da instituição.',
-    },
-    {
-      question: 'Quem analisa minha solicitação?',
-      answer:
-        'A solicitação passará pelos procedimentos de análise aplicáveis à operação. A instituição responsável pela contratação será claramente identificada antes da formalização.',
-    },
-    {
-      question: 'Quais documentos podem ser solicitados durante a análise?',
-      answer:
-        'Geralmente são solicitados documento de identificação com foto (RG ou CNH), comprovante de residência e comprovantes de renda ou faturamento (no caso de PJ). Não solicitamos senhas bancárias ou códigos de segurança de cartão.',
     },
   ];
 
@@ -53,7 +63,7 @@ export const FAQ: React.FC = () => {
             Perguntas Frequentes
           </h2>
           <p className="text-sm sm:text-base text-slate-600 mt-2">
-            Respostas diretas sobre o processo de solicitação, prazos e critérios de análise.
+            Respostas diretas sobre o processo de solicitação, prazos, taxas e critérios de análise.
           </p>
         </div>
 

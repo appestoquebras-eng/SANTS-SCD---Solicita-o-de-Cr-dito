@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Mail, Phone, MapPin, ExternalLink, Settings } from 'lucide-react';
+import { ShieldCheck, MapPin, Settings } from 'lucide-react';
 import {
   INSTITUTIONAL_DATA,
   getActiveWhatsAppNumber,
@@ -80,18 +80,18 @@ export const Footer: React.FC<FooterProps> = ({
               </li>
               <li>
                 <a
-                  href="#sobre"
-                  className="hover:text-white transition-colors text-left block"
-                >
-                  Sobre a SANTS
-                </a>
-              </li>
-              <li>
-                <a
                   href="#condicoes"
                   className="hover:text-white transition-colors text-left block"
                 >
                   Condições do Crédito
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#sobre"
+                  className="hover:text-white transition-colors text-left block"
+                >
+                  Sobre a SANTS
                 </a>
               </li>
             </ul>
@@ -105,11 +105,23 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="space-y-2 text-xs">
               <div>
                 <span className="text-slate-500 block text-[11px]">WhatsApp Oficial:</span>
-                <span className="text-slate-200 font-mono">{whatsappNumber}</span>
+                <span className="text-slate-200 font-mono">
+                  {whatsappNumber && whatsappNumber.length > 5 ? whatsappNumber : "Atendimento via WhatsApp"}
+                </span>
               </div>
               <div>
                 <span className="text-slate-500 block text-[11px]">E-mail de Atendimento:</span>
-                <span className="text-slate-200 font-mono">{contactEmail}</span>
+                <span className="text-slate-200 font-mono">
+                  {contactEmail && contactEmail.includes('@') ? contactEmail : "Atendimento oficial ao cliente"}
+                </span>
+              </div>
+              <div>
+                <a
+                  href="#simulador"
+                  className="text-blue-400 hover:text-blue-300 transition-colors inline-block text-[11px]"
+                >
+                  Contato & Início de Solicitação ↑
+                </a>
               </div>
               <div className="pt-2">
                 <button
@@ -118,7 +130,7 @@ export const Footer: React.FC<FooterProps> = ({
                   className="inline-flex items-center gap-1.5 text-[11px] text-slate-400 hover:text-blue-400 border border-slate-800 hover:border-slate-700 rounded-lg px-2.5 py-1.5 transition-colors cursor-pointer"
                 >
                   <Settings className="w-3.5 h-3.5" />
-                  <span>Configurar Contato / Parâmetros</span>
+                  <span>Configurar Contato</span>
                 </button>
               </div>
             </div>
@@ -136,7 +148,7 @@ export const Footer: React.FC<FooterProps> = ({
               <span className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-300 font-bold text-[10px]">
                 18+
               </span>
-              <span className="text-slate-500">Destinado a maiores de 18 anos</span>
+              <span className="text-slate-400 font-medium">Destinado exclusivamente a maiores de 18 anos</span>
             </div>
           </div>
 

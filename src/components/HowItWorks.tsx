@@ -7,7 +7,7 @@ export const HowItWorks: React.FC = () => {
       number: '01',
       title: 'Escolha seu perfil e o valor de interesse',
       description:
-        'Indique se a solicitação é para Pessoa Física ou Pessoa Jurídica e selecione a quantia desejada no simulador inicial.',
+        'Indique se a solicitação é para Pessoa Física ou Pessoa Jurídica e selecione a quantia pretendida no simulador inicial.',
       icon: SlidersHorizontal,
     },
     {
@@ -19,9 +19,9 @@ export const HowItWorks: React.FC = () => {
     },
     {
       number: '03',
-      title: 'Apresentação de condições para contratação',
+      title: 'Avaliação das condições disponíveis',
       description:
-        'Caso elegível conforme os critérios aplicáveis, serão apresentadas de forma clara as taxas, prazos e opções disponíveis.',
+        'Caso existam condições disponíveis para o seu perfil, elas serão apresentadas para avaliação antes de qualquer contratação.',
       icon: FileCheck,
     },
   ];
@@ -78,7 +78,7 @@ export const HowItWorks: React.FC = () => {
         {/* Informative Note */}
         <div className="mt-10 p-4 rounded-xl bg-slate-100/80 border border-slate-200 text-center max-w-2xl mx-auto">
           <p className="text-xs text-slate-600 leading-relaxed">
-            <strong className="text-slate-800">Transparência:</strong> O envio das informações não obriga a formalização de crédito nem garante a liberação de valores. A contratação só ocorre após aprovação formal e mútuo consentimento.
+            <strong className="text-slate-800">Transparência:</strong> O envio das informações não representa aprovação nem garantia de liberação de valores. A contratação só ocorre após apresentação prévia e consentimento formal com as condições aprovadas.
           </p>
         </div>
 

@@ -14,59 +14,81 @@ declare global {
 }
 
 export type TrackingEventName =
+  | 'page_view'
   | 'profile_selected'
+  | 'amount_changed'
   | 'loan_amount_changed'
+  | 'privacy_accepted'
   | 'whatsapp_click'
-  | 'simulation_started'
-  | 'privacy_accepted';
+  | 'application_started'
+  | 'simulation_started';
 
 export function trackEvent(eventName: TrackingEventName, payload?: Record<string, any>) {
-  const timestamp = new Date().toISOString();
-  const eventData = {
-    event: eventName,
-    ...payload,
-    timestamp,
-  };
-
-  // 1. Google Tag Manager / dataLayer
-  if (typeof window !== 'undefined') {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(eventData);
-
-    // 2. TikTok Pixel (quando instalado)
-    if (window.ttq && typeof window.ttq.track === 'function') {
-      try {
-        // Mapeamento semântico para eventos padrão do TikTok quando aplicável
-        if (eventName === 'whatsapp_click') {
-          window.ttq.track('Contact', {
-            content_name: 'whatsapp_credit_request',
-            value: payload?.amount,
-            currency: 'BRL',
-          });
-        } else if (eventName === 'simulation_started') {
-          window.ttq.track('InitiateCheckout', {
-            content_name: 'credit_simulation',
-            value: payload?.amount,
-            currency: 'BRL',
-          });
-        } else {
-          window.ttq.track(eventName, payload);
-        }
-      } catch (err) {
-        // Silencioso em caso de bloqueador de anúncios
+  try {
+    const timestamp = new Date().toISOString();
+    
+    // Filtrar estritamente apenas dados não sensíveis
+    const safePayload: Record<string, any> = {};
+    if (payload) {
+      if (payload.profile) safePayload.profile = payload.profile;
+      if (typeof payload.amount === 'number') {
+        safePayload.amount = payload.amount;
+        safePayload.currency = 'BRL';
       }
     }
 
-    // 3. Custom DOM Event (permite listeners externos e depuração)
-    window.dispatchEvent(
-      new CustomEvent('sants_analytics', {
-        detail: eventData,
-      })
-    );
+    const eventData = {
+      event: eventName,
+      ...safePayload,
+      timestamp,
+    };
 
-    // 4. Log em ambiente de desenvolvimento
-    if (import.meta.env.DEV) {
-      console.log(`[ANALYTICS] Evento disparado: "${eventName}"`, payload);
+    if (typeof window !== 'undefined') {
+      // 1. Google Tag Manager / dataLayer
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(eventData);
+
+      // 2. TikTok Pixel
+      if (window.ttq && typeof window.ttq.track === 'function') {
+        try {
+          if (eventName === 'whatsapp_click') {
+            window.ttq.track('Contact', {
+              content_name: 'whatsapp_credit_request',
+              value: safePayload.amount,
+              currency: 'BRL',
+            });
+          } else if (eventName === 'application_started' || eventName === 'simulation_started') {
+            window.ttq.track('InitiateCheckout', {
+              content_name: 'credit_simulation',
+              value: safePayload.amount,
+              currency: 'BRL',
+            });
+          } else if (eventName === 'page_view') {
+            if (typeof window.ttq.page === 'function') {
+              window.ttq.page();
+            }
+          } else {
+            window.ttq.track(eventName, safePayload);
+          }
+        } catch {
+          // Bloqueador de anúncios ou erro de script de terceiros não interrompe a UX
+        }
+      }
+
+      // 3. Custom DOM Event
+      window.dispatchEvent(
+        new CustomEvent('sants_analytics', {
+          detail: eventData,
+        })
+      );
+
+      // 4. Log em ambiente de desenvolvimento
+      if (import.meta.env.DEV) {
+        console.log(`[ANALYTICS] Evento disparado: "${eventName}"`, safePayload);
+      }
     }
+  } catch (err) {
+    // Falha em telemetria nunca pode travar o fluxo do usuário
+    console.warn('[ANALYTICS] Falha não impeditiva no disparo:', err);
   }
 }

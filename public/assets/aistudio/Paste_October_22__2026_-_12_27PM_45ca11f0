@@ -1,0 +1,1166 @@
+Quero que você MODIFIQUE E COMPLETE o site existente da SANTS SCD.
+
+NÃO crie um site diferente do zero.
+
+Preserve a identidade visual atual, o layout profissional em azul escuro, a estrutura mobile-first, o simulador PF/PJ, o slider de valores, o botão para WhatsApp, as seções institucionais, FAQ, Política de Privacidade, Termos de Uso e demais partes que já estejam funcionando.
+
+O objetivo é fazer uma REVISÃO COMPLETA do site atual, corrigindo os pontos incompletos e aumentando ao máximo o alinhamento da landing page com as políticas atuais do TikTok Ads para serviços financeiros no Brasil.
+
+IMPORTANTE:
+Nenhum código, informação financeira ou texto deve ser inventado apenas para “passar na aprovação”.
+
+Não existe garantia de aprovação pelo TikTok Ads.
+
+A página precisa ser verdadeira, completa, transparente e consistente com a operação real.
+
+==================================================
+1. SITE ATUAL
+==================================================
+
+Site:
+
+https://santscredito.online/
+
+Trabalhe sobre o projeto/código existente.
+
+Preserve o que já estiver funcionando corretamente.
+
+NÃO destrua o design atual.
+
+NÃO transforme a página em um formulário longo.
+
+A conversão principal deve continuar sendo:
+
+TikTok Ads
+→ landing page
+→ escolha PF/PJ
+→ escolha do valor de interesse
+→ aceite da Política de Privacidade
+→ WhatsApp com mensagem dinâmica.
+
+==================================================
+2. DADOS INSTITUCIONAIS
+==================================================
+
+Empresa:
+
+SANTS SOCIEDADE DE CRÉDITO DIRETO S.A.
+
+Nome utilizado:
+
+SANTS SCD
+
+CNPJ:
+
+52.440.987/0001-69
+
+Localização institucional:
+
+São José dos Campos - SP
+
+Manter de forma clara a informação institucional de que:
+
+“A SANTS Sociedade de Crédito Direto S.A. é uma instituição autorizada pelo Banco Central do Brasil a atuar como Sociedade de Crédito Direto, nos termos da regulamentação aplicável.”
+
+NÃO utilizar expressões como:
+
+“aprovada pelo Banco Central”
+“garantida pelo Banco Central”
+“chancelada pelo Banco Central”
+“recomendada pelo Banco Central”
+“BACEN aprovado”
+“selo do Banco Central”
+
+Não criar logotipo ou selo falso do Banco Central.
+
+Não utilizar o Banco Central como argumento de garantia de crédito.
+
+==================================================
+3. MODELO DA OPERAÇÃO
+==================================================
+
+O site é utilizado para captação de interesse e geração de solicitações de crédito.
+
+A landing page NÃO deve sugerir que simplesmente preencher o site significa:
+
+aprovação;
+contratação;
+liberação;
+garantia de crédito;
+dinheiro disponível;
+crédito pré-aprovado.
+
+A comunicação deve explicar que o usuário está manifestando interesse e iniciando uma solicitação sujeita à análise.
+
+Utilizar texto semelhante a:
+
+“Por meio deste site, o usuário manifesta interesse em uma operação de crédito e inicia uma solicitação para análise. A aprovação, os valores disponíveis, as taxas, o prazo e demais condições dependem dos critérios aplicáveis à operação.”
+
+Se determinada solicitação puder ser encaminhada para instituição financeira parceira, deixar claro:
+
+“Dependendo da modalidade e da operação, a solicitação poderá ser analisada e/ou contratada por instituição financeira parceira devidamente habilitada. A instituição responsável será identificada ao cliente antes da contratação.”
+
+NÃO utilizar a autorização regulatória da SANTS para dar a entender que qualquer empresa terceira possui a mesma autorização.
+
+==================================================
+4. PRIMEIRA TELA
+==================================================
+
+Manter o simulador já na primeira tela.
+
+A pessoa deve entender rapidamente:
+
+quem é a empresa;
+que se trata de solicitação de crédito;
+que está sujeita à análise;
+se é PF ou PJ;
+quanto pretende solicitar;
+como continuar pelo WhatsApp.
+
+Título recomendado:
+
+“Crédito para seus planos, sujeito à análise”
+
+Subtítulo:
+
+“Escolha seu perfil e o valor de interesse para iniciar sua solicitação.”
+
+Texto complementar:
+
+“Valores, disponibilidade, taxas, prazos e demais condições dependem da modalidade e da análise aplicável.”
+
+Não escrever:
+
+“Crédito aprovado”
+“Dinheiro garantido”
+“Dinheiro na hora”
+“Aprovação imediata”
+“100% aprovado”
+“Todos são aprovados”
+“Crédito sem análise”
+“Liberação garantida”
+“Dinheiro em minutos”
+“Menor taxa do Brasil”
+“Menor taxa do mercado”
+
+==================================================
+5. PESSOA FÍSICA E PESSOA JURÍDICA
+==================================================
+
+Manter dois botões:
+
+Pessoa Física
+
+Pessoa Jurídica
+
+Quando Pessoa Física estiver selecionada:
+
+Valor mínimo:
+R$ 1.000
+
+Valor máximo:
+R$ 50.000
+
+Quando Pessoa Jurídica estiver selecionada:
+
+Valor mínimo:
+R$ 5.000
+
+Valor máximo:
+R$ 100.000
+
+O valor deve ser chamado exclusivamente de:
+
+“Valor de interesse”
+
+ou:
+
+“Valor solicitado”
+
+NUNCA:
+
+“Valor aprovado”
+
+NUNCA fazer o slider parecer uma pré-aprovação.
+
+==================================================
+6. CONDIÇÕES FINANCEIRAS — CORRIGIR A SEÇÃO ATUAL
+==================================================
+
+A seção atual “Condições do crédito” possui informações marcadas como “[A DEFINIR]”.
+
+ELIMINE todos os “[A DEFINIR]” visíveis para o visitante.
+
+Utilizar as seguintes condições confirmadas para a operação:
+
+TAXA DE JUROS MENSAL:
+
+A partir de 1,35% ao mês.
+
+TAXA ANUAL EQUIVALENTE:
+
+A partir de aproximadamente 17,46% ao ano.
+
+IMPORTANTE:
+
+17,46% ao ano corresponde à equivalência efetiva aproximada de uma taxa de 1,35% ao mês composta durante 12 meses.
+
+Não calcular a taxa anual simplesmente multiplicando 1,35 × 12.
+
+PRAZO MÍNIMO:
+
+6 meses.
+
+PRAZO MÁXIMO:
+
+120 meses.
+
+Texto recomendado:
+
+“Taxas de juros a partir de 1,35% ao mês, equivalente a aproximadamente 17,46% ao ano. Prazo de pagamento de 6 a 120 meses, conforme modalidade, perfil e análise de crédito.”
+
+Logo abaixo:
+
+“As taxas, o CET, valores disponíveis, custos e demais condições podem variar conforme modalidade, perfil do cliente e análise da operação. As condições definitivas serão apresentadas ao cliente antes da contratação.”
+
+Não usar a expressão:
+
+“menor taxa do mercado”.
+
+==================================================
+7. CET — NÃO INVENTAR
+==================================================
+
+O CET NÃO deve ser calculado apenas utilizando 1,35% ao mês.
+
+O Custo Efetivo Total pode envolver outros componentes da operação.
+
+Se houver no projeto ou nos documentos fornecidos um CET REAL e confirmado, utilizar esse valor corretamente.
+
+Se NÃO houver CET real disponível, NÃO criar um número fictício.
+
+Nesse caso, substituir o atual “[A DEFINIR]” por uma informação transparente como:
+
+“CET: varia conforme as condições específicas da operação e será informado de forma clara na proposta antes da contratação.”
+
+Não apresentar um CET falso somente para preencher o layout.
+
+Se posteriormente for fornecido um CET real, deixar o componente preparado para atualização fácil.
+
+Criar no código:
+
+const CREDIT_CONFIG = {
+  monthlyInterestFrom: 1.35,
+  annualEquivalentFrom: 17.46,
+  minTermMonths: 6,
+  maxTermMonths: 120,
+  cet: null,
+  fees: null
+};
+
+Quando cet for null, mostrar a mensagem explicativa acima em vez de “[A DEFINIR]”.
+
+==================================================
+8. TARIFAS E CUSTOS
+==================================================
+
+Não inventar tarifas.
+
+Se o projeto possuir informação confirmada sobre:
+
+tarifa;
+seguro;
+IOF;
+taxa administrativa;
+tarifa de cadastro;
+outro custo;
+
+apresentar corretamente.
+
+Caso a informação não esteja disponível, NÃO colocar:
+
+“A DEFINIR”.
+
+Utilizar:
+
+“Tarifas e demais custos: quando aplicáveis à operação, serão informados de forma clara antes da contratação e considerados no CET correspondente.”
+
+Não afirmar:
+
+“Sem taxas”
+“Sem tarifa”
+“Taxa zero”
+
+a menos que isso esteja comprovadamente correto para todas as operações abrangidas pela afirmação.
+
+==================================================
+9. EXEMPLO REPRESENTATIVO
+==================================================
+
+Manter a seção “Exemplo representativo”, mas NÃO inventar números financeiros.
+
+Se o projeto possuir todos os dados reais necessários para calcular um exemplo — valor, prazo, taxa, CET e custos — fazer o cálculo correto.
+
+O exemplo deve indicar claramente:
+
+valor solicitado;
+número de parcelas;
+taxa mensal;
+taxa anual equivalente;
+CET quando aplicável;
+valor aproximado da parcela;
+valor total;
+eventuais custos.
+
+Se ainda não houver todos os elementos necessários, mostrar texto transparente:
+
+“Exemplo representativo: as parcelas, o valor total e o CET dependem das condições efetivamente disponibilizadas após a análise. Antes de qualquer contratação, o cliente receberá a proposta com taxa, CET, prazo, parcelas, custos aplicáveis e valor total da operação.”
+
+Não gerar parcelas fictícias apenas para preencher o site.
+
+Preparar o componente para que o exemplo numérico possa ser ativado depois que os dados reais forem fornecidos.
+
+==================================================
+10. AVISO FINANCEIRO PRÓXIMO AO SIMULADOR
+==================================================
+
+Logo abaixo do botão de WhatsApp, manter um aviso claramente legível:
+
+“A solicitação não representa aprovação ou garantia de crédito. Valores, taxas, prazos e demais condições estão sujeitos à modalidade, critérios de elegibilidade e análise aplicável.”
+
+Adicionar:
+
+“Produto destinado exclusivamente a maiores de 18 anos.”
+
+A fonte não pode ser minúscula a ponto de ser praticamente ilegível.
+
+==================================================
+11. PRAZO
+==================================================
+
+Em todas as partes do site em que aparecer prazo, padronizar para:
+
+“De 6 a 120 meses, conforme modalidade, perfil e análise de crédito.”
+
+Eliminar qualquer texto antigo mencionando:
+
+6 a 48 meses;
+12 a 48 meses;
+ou qualquer outra faixa diferente.
+
+Pesquisar em TODOS os arquivos do projeto para garantir consistência.
+
+==================================================
+12. REGRA DE 18+
+==================================================
+
+Deixar claro no site:
+
+“Destinado a maiores de 18 anos.”
+
+Não criar mecanismos que incentivem menores de idade.
+
+O site deve estar preparado para campanhas direcionadas somente a maiores de 18 anos.
+
+==================================================
+13. WHATSAPP
+==================================================
+
+Manter o CTA principal:
+
+“Continuar pelo WhatsApp”
+
+ou:
+
+“Solicitar análise”
+
+Não utilizar:
+
+“Aprovar agora”
+“Receber dinheiro”
+“Liberar meu dinheiro”
+“Pegar meu empréstimo”
+“Receber crédito agora”
+
+Ao clicar, montar dinamicamente a mensagem.
+
+Pessoa Física:
+
+“Olá! Vim pelo site da SANTS e gostaria de iniciar uma solicitação para análise de crédito.
+
+Perfil: Pessoa Física
+Valor de interesse: R$ [VALOR]
+
+Estou ciente de que a solicitação está sujeita à análise e que valores, taxas, prazos e demais condições podem variar.”
+
+Pessoa Jurídica:
+
+“Olá! Vim pelo site da SANTS e gostaria de iniciar uma solicitação para análise de crédito.
+
+Perfil: Pessoa Jurídica
+Valor de interesse: R$ [VALOR]
+
+Estou ciente de que a solicitação está sujeita à análise e que valores, taxas, prazos e demais condições podem variar.”
+
+Utilizar encodeURIComponent().
+
+Não enviar nenhum dado que o usuário não tenha informado.
+
+Preservar o número CORRETO do WhatsApp já configurado no projeto.
+
+Não reutilizar telefone antigo encontrado em documentos.
+
+==================================================
+14. CONSENTIMENTO E PRIVACIDADE
+==================================================
+
+Antes do botão principal, manter checkbox NÃO pré-selecionado.
+
+Texto:
+
+“Li a Política de Privacidade e autorizo o tratamento dos meus dados para atendimento desta solicitação, conforme descrito na Política de Privacidade.”
+
+“Política de Privacidade” deve ser link clicável.
+
+O botão do WhatsApp deve permanecer desabilitado enquanto o usuário não marcar o checkbox.
+
+Não utilizar dark pattern.
+
+Não selecionar consentimento automaticamente.
+
+==================================================
+15. POLÍTICA DE PRIVACIDADE
+==================================================
+
+Revisar completamente a página de Política de Privacidade.
+
+A política deve estar em português claro e incluir, de acordo com a operação efetivamente realizada:
+
+identificação da empresa;
+CNPJ;
+quais dados são coletados;
+dados coletados diretamente;
+dados coletados automaticamente;
+cookies e tecnologias de medição;
+finalidades do tratamento;
+atendimento da solicitação;
+análise e encaminhamento da solicitação;
+compartilhamento com instituições financeiras/parceiros quando necessário;
+prestadores de tecnologia;
+fundamentos jurídicos aplicáveis;
+prazo ou critérios de retenção;
+segurança;
+direitos do titular segundo a LGPD;
+correção;
+acesso;
+eliminação quando cabível;
+revogação de consentimento quando aplicável;
+portabilidade quando aplicável;
+informações sobre compartilhamento;
+transferências internacionais quando houver;
+canal de contato;
+data da última atualização.
+
+Não afirmar práticas que a empresa não realiza.
+
+Se informações operacionais não estiverem disponíveis, estruturar o texto para ser facilmente atualizado, mas NÃO exibir placeholders como “[A DEFINIR]” ao usuário final.
+
+==================================================
+16. COMPARTILHAMENTO DE LEADS
+==================================================
+
+Como a operação pode envolver geração ou encaminhamento de solicitações, adicionar transparência suficiente.
+
+Texto-base:
+
+“Quando necessário para atendimento da solicitação, os dados poderão ser compartilhados com instituições financeiras ou parceiros envolvidos na análise, formalização ou atendimento da operação, conforme descrito na Política de Privacidade e observada a legislação aplicável.”
+
+Não escrever que os dados serão vendidos.
+
+Não esconder o compartilhamento.
+
+Não criar consentimento genérico enganoso.
+
+==================================================
+17. TERMOS DE USO
+==================================================
+
+Revisar os Termos de Uso.
+
+Deixar claro:
+
+o site permite manifestação de interesse;
+o simulador não representa aprovação;
+o valor selecionado é apenas o valor de interesse;
+a solicitação está sujeita à análise;
+taxas e condições podem variar;
+a instituição responsável pela contratação será identificada antes da formalização;
+nenhuma mensagem no site representa garantia de concessão;
+as condições definitivas serão apresentadas antes da contratação;
+regras gerais de uso;
+proteção contra fraude;
+identificação da empresa;
+canal de contato.
+
+==================================================
+18. “COMO FUNCIONA”
+==================================================
+
+Manter os três passos, mas utilizar linguagem precisa.
+
+Passo 1:
+
+“Escolha seu perfil e o valor de interesse.”
+
+Passo 2:
+
+“Envie sua solicitação para análise.”
+
+Passo 3:
+
+“Caso existam condições disponíveis para o seu perfil, elas serão apresentadas para avaliação antes de qualquer contratação.”
+
+Não escrever:
+
+“Seu dinheiro será liberado”
+“Você receberá”
+“Após enviar você é aprovado”
+
+==================================================
+19. FAQ
+==================================================
+
+Revisar o FAQ para conter pelo menos:
+
+PERGUNTA:
+“O envio da solicitação garante aprovação?”
+
+RESPOSTA:
+“Não. O envio da solicitação não representa aprovação ou garantia de crédito. A disponibilidade depende da modalidade, critérios de elegibilidade e análise aplicável.”
+
+PERGUNTA:
+“Qual valor posso solicitar?”
+
+RESPOSTA:
+“O site permite indicar valores de interesse conforme o perfil selecionado. Para Pessoa Física, de R$ 1.000 a R$ 50.000; para Pessoa Jurídica, de R$ 5.000 a R$ 100.000. A disponibilidade efetiva depende da análise.”
+
+PERGUNTA:
+“Qual é a taxa de juros?”
+
+RESPOSTA:
+“As taxas podem partir de 1,35% ao mês, equivalente a aproximadamente 17,46% ao ano. A taxa efetivamente disponibilizada pode variar conforme modalidade, perfil e análise.”
+
+PERGUNTA:
+“Qual é o prazo?”
+
+RESPOSTA:
+“O prazo pode variar de 6 a 120 meses, conforme modalidade, perfil e condições disponibilizadas.”
+
+PERGUNTA:
+“O que é CET?”
+
+RESPOSTA:
+“O Custo Efetivo Total reúne os custos da operação de crédito. O CET aplicável será apresentado ao cliente de forma clara antes da contratação.”
+
+PERGUNTA:
+“Quando saberei as condições finais?”
+
+RESPOSTA:
+“As condições da proposta, incluindo taxa, prazo, parcelas, CET e custos aplicáveis, serão apresentadas antes da contratação.”
+
+PERGUNTA:
+“Quem realiza a análise?”
+
+RESPOSTA:
+“A solicitação seguirá os procedimentos de análise aplicáveis à operação. Caso haja participação de instituição financeira parceira, a responsável pela contratação será identificada antes da formalização.”
+
+==================================================
+20. SOBRE A SANTS
+==================================================
+
+Preservar a seção institucional.
+
+Usar linguagem séria e factual.
+
+Texto:
+
+“A SANTS Sociedade de Crédito Direto S.A. é uma instituição autorizada pelo Banco Central do Brasil a atuar como Sociedade de Crédito Direto, nos termos da regulamentação aplicável.”
+
+Mostrar:
+
+SANTS SOCIEDADE DE CRÉDITO DIRETO S.A.
+
+CNPJ 52.440.987/0001-69
+
+São José dos Campos - SP
+
+Não transformar essa autorização em uma promessa comercial de aprovação.
+
+==================================================
+21. RODAPÉ
+==================================================
+
+Revisar o rodapé.
+
+Ele deve mostrar claramente:
+
+SANTS SOCIEDADE DE CRÉDITO DIRETO S.A.
+
+CNPJ:
+52.440.987/0001-69
+
+cidade/UF;
+
+WhatsApp correto;
+
+e-mail correto;
+
+link para Política de Privacidade;
+
+link para Termos de Uso;
+
+link para Contato;
+
+link para Condições de Crédito;
+
+aviso 18+.
+
+Adicionar:
+
+“Operações sujeitas à análise, critérios de elegibilidade e condições aplicáveis.”
+
+Se telefone ou e-mail não estiverem confirmados dentro do projeto atual, NÃO inventar.
+
+Não utilizar contatos antigos encontrados em documentos.
+
+==================================================
+22. REMOVER QUALQUER CONTEÚDO DE RISCO
+==================================================
+
+Faça busca em TODOS os arquivos e remova ou substitua qualquer ocorrência de:
+
+100% aprovado
+aprovação garantida
+crédito garantido
+dinheiro garantido
+aprovação imediata
+liberação imediata
+dinheiro na hora
+dinheiro em minutos
+sem análise
+todos aprovados
+a menor taxa do mercado
+menor taxa do Brasil
+melhor taxa garantida
+pré-aprovado
+
+Também detectar variações semelhantes.
+
+Não utilizar urgência falsa, por exemplo:
+
+“Só hoje”
+“Últimas vagas”
+“Oferta termina em 5 minutos”
+“Corra”
+“Última chance”
+
+Não criar cronômetro falso.
+
+Não criar pop-up falso.
+
+Não criar depoimentos fictícios.
+
+Não criar avaliações fictícias.
+
+Não criar número falso de clientes.
+
+Não criar selos regulatórios falsos.
+
+==================================================
+23. PROTEÇÃO CONTRA INFORMAÇÃO ENGANOSA
+==================================================
+
+Qualquer afirmação quantitativa precisa corresponder à realidade da operação.
+
+Não criar:
+
+“98% de aprovação”
+“Mais de 50 mil clientes”
+“Liberação em 5 minutos”
+“Resposta em 2 minutos”
+
+sem evidência verificável.
+
+Não prometer resultado individual.
+
+Não utilizar “garantido”.
+
+==================================================
+24. CONSISTÊNCIA COM TIKTOK ADS
+==================================================
+
+A landing page deve ser consistente com o anúncio.
+
+Preparar o site para anúncios com linguagem como:
+
+“Solicite uma análise de crédito”
+
+“Consulte opções de crédito”
+
+“Crédito sujeito à análise”
+
+“Escolha o valor de interesse”
+
+“Taxas a partir de 1,35% a.m.”
+
+Evitar anúncios com afirmações que não apareçam ou não possam ser comprovadas na landing page.
+
+==================================================
+25. REGRAS FINANCEIRAS DE SEGURANÇA
+==================================================
+
+Não estruturar a página para divulgar produtos incompatíveis com as políticas financeiras aplicáveis do TikTok.
+
+Não transformar a oferta em empréstimo de curtíssimo prazo.
+
+O prazo mínimo configurado deve continuar sendo 6 meses.
+
+Não criar automaticamente produto com prazo de 90 dias ou menos.
+
+Não criar produto cuja taxa percentual anual aplicável seja igual ou superior a 50% para campanhas no TikTok.
+
+Caso os dados reais configurados futuramente ultrapassem limites permitidos pela política da plataforma, mostrar um aviso administrativo no código e NÃO apresentar a oferta como apropriada para campanha no TikTok.
+
+==================================================
+26. LANDING PAGE COMPLETA
+==================================================
+
+A landing page não pode parecer:
+
+em construção;
+inacabada;
+quebrada;
+provisória.
+
+Remover do frontend:
+
+[A DEFINIR]
+TODO
+LOREM IPSUM
+placeholder
+teste
+exemplo temporário
+telefone fictício
+e-mail fictício
+texto de desenvolvimento.
+
+Nenhum botão pode estar quebrado.
+
+Nenhum link pode levar para página inexistente.
+
+==================================================
+27. MOBILE FIRST
+==================================================
+
+Priorizar tráfego vindo do TikTok pelo celular.
+
+Testar em:
+
+360 px;
+375 px;
+390 px;
+412 px;
+430 px.
+
+Garantir:
+
+nenhum texto cortado;
+nenhuma rolagem horizontal;
+slider fácil de utilizar;
+botões com área de toque adequada;
+fontes legíveis;
+FAQ funcional;
+menu funcional;
+WhatsApp funcional;
+checkbox fácil de marcar;
+Política de Privacidade acessível;
+carregamento rápido.
+
+==================================================
+28. PERFORMANCE
+==================================================
+
+Otimizar:
+
+Core Web Vitals;
+imagens;
+CSS;
+JavaScript;
+fontes;
+carregamento inicial;
+lazy loading quando apropriado.
+
+Não prejudicar o funcionamento do pixel.
+
+Evitar bibliotecas enormes desnecessárias.
+
+==================================================
+29. TIKTOK PIXEL E TRACKING
+==================================================
+
+Não remover códigos de rastreamento existentes que estejam configurados corretamente.
+
+Preparar eventos claros:
+
+page_view
+
+profile_selected
+
+amount_changed
+
+privacy_accepted
+
+whatsapp_click
+
+application_started
+
+Para whatsapp_click, enviar apenas dados de evento apropriados.
+
+Não enviar em parâmetros de analytics:
+
+senha;
+dados bancários;
+documentos completos;
+CVV;
+token;
+credenciais.
+
+Preservar placeholders/configurações legítimas existentes do TikTok Pixel, Google Tag Manager e Google Analytics.
+
+Não criar IDs fictícios.
+
+==================================================
+30. EVENTO DE CONVERSÃO
+==================================================
+
+O clique no WhatsApp deve poder ser utilizado como conversão.
+
+Antes de abrir o WhatsApp:
+
+validar PF/PJ;
+validar o valor;
+validar o checkbox;
+disparar o evento de clique;
+gerar a mensagem dinâmica;
+abrir o WhatsApp.
+
+Não impedir a abertura do WhatsApp caso um script de tracking externo falhe.
+
+==================================================
+31. SEO
+==================================================
+
+Manter título e metadados profissionais.
+
+Title recomendado:
+
+“Solicitação de Crédito | SANTS SCD”
+
+Meta description:
+
+“Consulte opções de crédito e envie sua solicitação para análise. Taxas a partir de 1,35% ao mês. Condições sujeitas à análise e critérios aplicáveis.”
+
+Criar canonical correto.
+
+Open Graph.
+
+Schema.org Organization quando apropriado.
+
+Não usar keywords spam.
+
+==================================================
+32. ACESSIBILIDADE
+==================================================
+
+Garantir:
+
+HTML semântico;
+labels;
+ARIA somente quando necessário;
+contraste suficiente;
+navegação por teclado;
+focus states;
+alt em imagens;
+mensagens de erro acessíveis.
+
+==================================================
+33. LINKS LEGAIS
+==================================================
+
+Verificar se funcionam:
+
+/politica-de-privacidade
+
+/termos-de-uso
+
+/contato, se existir.
+
+Todos devem funcionar diretamente pela URL.
+
+Nenhum link pode resultar em 404.
+
+==================================================
+34. REVISÃO DO CÓDIGO
+==================================================
+
+Antes de entregar:
+
+procure “[A DEFINIR]” em todos os arquivos;
+
+procure “[COLOCAR]”;
+
+procure “TODO”;
+
+procure dados fictícios;
+
+procure números de telefone antigos;
+
+procure e-mails antigos;
+
+procure prazos antigos de 48 meses;
+
+procure afirmações de aprovação;
+
+procure “menor taxa”;
+
+procure botões sem ação;
+
+procure links quebrados;
+
+procure dados inconsistentes entre desktop e mobile.
+
+Corrija tudo que puder ser corrigido com informações confirmadas.
+
+==================================================
+35. DADOS FINANCEIROS CONFIRMADOS
+==================================================
+
+Considere confirmados:
+
+Taxa mensal mínima:
+1,35% a.m.
+
+Taxa anual equivalente aproximada:
+17,46% a.a.
+
+Prazo mínimo:
+6 meses.
+
+Prazo máximo:
+120 meses.
+
+PF:
+R$ 1.000 a R$ 50.000.
+
+PJ:
+R$ 5.000 a R$ 100.000.
+
+Não alterar esses dados sem instrução posterior.
+
+==================================================
+36. DADOS QUE NÃO PODEM SER INVENTADOS
+==================================================
+
+Não inventar:
+
+CET numérico;
+tarifas;
+seguros;
+custos extras;
+prazo de liberação;
+percentual de aprovação;
+quantidade de clientes;
+telefone;
+e-mail;
+nome de parceiro financeiro;
+taxa de parceiro;
+parcelas representativas sem dados suficientes.
+
+Caso algum desses dados já esteja REALMENTE configurado no projeto e seja confiável, preservar ou utilizar corretamente.
+
+==================================================
+37. COMPORTAMENTO QUANDO CET OU TARIFAS NÃO ESTIVEREM DISPONÍVEIS
+==================================================
+
+NUNCA mostrar:
+
+“CET: A DEFINIR”
+
+ou:
+
+“Tarifas: A DEFINIR”.
+
+Substituir por divulgação verdadeira.
+
+CET:
+
+“O CET aplicável varia conforme as condições específicas da operação e será informado na proposta antes da contratação.”
+
+Tarifas:
+
+“Eventuais tarifas e custos aplicáveis serão informados de forma clara antes da contratação e considerados no CET correspondente.”
+
+Isso deve continuar facilmente editável quando forem fornecidos os dados reais.
+
+==================================================
+38. NÃO COLETAR DADOS DESNECESSÁRIOS NA PRIMEIRA TELA
+==================================================
+
+Na primeira interação, manter apenas:
+
+PF/PJ;
+valor de interesse;
+aceite de privacidade.
+
+Não solicitar:
+
+senha;
+senha bancária;
+CVV;
+número completo de cartão;
+token;
+senha do aplicativo bancário.
+
+Não coletar documento apenas para permitir que o visitante veja o conteúdo principal.
+
+==================================================
+39. NÃO BLOQUEAR CONTEÚDO
+==================================================
+
+O usuário deve conseguir visualizar normalmente:
+
+quem é a empresa;
+condições gerais;
+como funciona;
+informações institucionais;
+FAQ;
+termos;
+privacidade;
+
+sem precisar fornecer dados pessoais.
+
+==================================================
+40. ENTREGA
+==================================================
+
+Depois de fazer todas as correções, entregue TODOS os arquivos completos modificados.
+
+Não envie apenas snippets.
+
+Não envie apenas orientação.
+
+Quero código pronto para substituir/publicar.
+
+Se o projeto utilizar:
+
+index.html
+style.css
+script.js
+politica-de-privacidade.html
+termos-de-uso.html
+
+entregar todos os arquivos modificados integralmente.
+
+Se utilizar React, Next.js, Vite ou outra stack, preservar a stack existente e entregar todos os componentes/arquivos necessários.
+
+==================================================
+41. AUDITORIA FINAL OBRIGATÓRIA
+==================================================
+
+Antes de finalizar, faça uma auditoria completa e responda internamente a cada item:
+
+[ ] A taxa é “a partir de 1,35% a.m.”?
+
+[ ] A taxa anual equivalente está em aproximadamente 17,46% a.a.?
+
+[ ] O prazo está de 6 a 120 meses?
+
+[ ] Não existe “A DEFINIR” visível?
+
+[ ] Não existe promessa de aprovação?
+
+[ ] Não existe “menor taxa do mercado”?
+
+[ ] Não existe urgência falsa?
+
+[ ] Não existe depoimento falso?
+
+[ ] Não existe selo falso?
+
+[ ] PF está de R$ 1.000 a R$ 50.000?
+
+[ ] PJ está de R$ 5.000 a R$ 100.000?
+
+[ ] O slider representa apenas valor de interesse?
+
+[ ] O site deixa claro que há análise?
+
+[ ] O site é 18+?
+
+[ ] A Política de Privacidade está acessível?
+
+[ ] O compartilhamento com instituições/parceiros está explicado quando aplicável?
+
+[ ] Os Termos estão acessíveis?
+
+[ ] O CNPJ está correto?
+
+[ ] A informação sobre autorização do Banco Central não sugere endosso?
+
+[ ] O WhatsApp funciona?
+
+[ ] A mensagem do WhatsApp contém PF/PJ e valor?
+
+[ ] O consentimento não vem pré-marcado?
+
+[ ] O site funciona perfeitamente em celular?
+
+[ ] Não há links quebrados?
+
+[ ] Não há contatos antigos?
+
+[ ] Não existe CET fictício?
+
+[ ] Não existem tarifas inventadas?
+
+[ ] Anúncio e landing page podem manter a mesma oferta?
+
+Se qualquer resposta for “não”, corrija antes da entrega.
+
+==================================================
+42. RESULTADO FINAL
+==================================================
+
+Quero que o resultado mantenha a aparência profissional atual da SANTS, mas elimine todos os sinais de página incompleta.
+
+A página final deve comunicar claramente:
+
+SANTS SCD;
+instituição devidamente identificada;
+solicitação de crédito;
+taxa a partir de 1,35% a.m.;
+aproximadamente 17,46% a.a.;
+prazo de 6 a 120 meses;
+PF de R$ 1.000 a R$ 50.000;
+PJ de R$ 5.000 a R$ 100.000;
+operação sujeita à análise;
+ausência de garantia de aprovação;
+condições definitivas apresentadas antes da contratação;
+consentimento e privacidade;
+continuação pelo WhatsApp.
+
+O objetivo é deixar o site o mais alinhado possível às políticas aplicáveis do TikTok Ads e às boas práticas de transparência para serviços financeiros.
+
+NÃO afirme no site ou na sua resposta que a aprovação pelo TikTok é garantida.
+
+A decisão final de aprovação continua pertencendo à plataforma.
