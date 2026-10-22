@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "santscredito",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-08-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sants-atendimento",
+      "database_id": "ccf7f334-5284-44c5-a358-33c23a84352c",
+      "migrations_dir": "migrations",
+    },
+  ],
+}
