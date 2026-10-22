@@ -114,7 +114,7 @@ export const TermsOfUseModal: React.FC<TermsOfUseModalProps> = ({ isOpen, onClos
               7. Canal de Contato
             </h3>
             <p>
-              Para dúvidas ou informações sobre o uso da plataforma, o atendimento institucional está disponível diretamente pelos canais eletrônicos e pelo WhatsApp oficial da instituição.
+              Para dúvidas ou informações sobre o uso da plataforma, o atendimento institucional está disponível diretamente pelos canais eletrônicos, pelo WhatsApp oficial: (11) 96243-3641 e pelo e-mail: contato@santscredito.online.
             </p>
           </section>
 

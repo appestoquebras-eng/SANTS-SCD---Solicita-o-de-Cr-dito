@@ -1,6 +1,6 @@
 import React from 'react';
-import { Percent, Calendar, FileText, AlertTriangle, ShieldCheck } from 'lucide-react';
-import { CREDIT_CONFIG, FINANCIAL_TEXTS } from '../config/creditConfig';
+import { Percent, Calendar, FileText, AlertTriangle, ShieldCheck, Calculator, Info } from 'lucide-react';
+import { CREDIT_CONFIG, FINANCIAL_TEXTS, REPRESENTATIVE_EXAMPLE_DATA } from '../config/creditConfig';
 
 export const FinancialConditions: React.FC = () => {
   return (
@@ -70,7 +70,7 @@ export const FinancialConditions: React.FC = () => {
               </div>
             </div>
             <p className="text-[11px] text-slate-500 mt-2 leading-snug">
-              Equivalência efetiva anual aproximada calculada para a taxa mensal de 1,35% a.m. composta em 12 meses.
+              Equivalência efetiva anual aproximada calculada para a taxa mensal de 1,35% a.m. composta em 12 meses. Condição &ldquo;a partir de&rdquo;.
             </p>
           </div>
 
@@ -148,21 +148,101 @@ export const FinancialConditions: React.FC = () => {
 
         </div>
 
-        {/* Caixa de Exemplo Representativo */}
-        <div className="p-6 bg-slate-900 text-white rounded-2xl border border-slate-800 shadow-md">
-          <div className="flex items-center gap-2.5 mb-2.5">
-            <span className="px-2.5 py-0.5 rounded text-[11px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">
-              DISCLOSURE
+        {/* Caixa de Exemplo Representativo Numérico (Conformidade com TikTok Ads & BACEN) */}
+        <div className="p-6 sm:p-7 bg-slate-900 text-white rounded-2xl border border-slate-800 shadow-xl">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800">
+            <div className="flex items-center gap-2.5">
+              <span className="px-2.5 py-1 rounded text-[11px] font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30 tracking-wider uppercase flex items-center gap-1.5">
+                <Calculator className="w-3.5 h-3.5" />
+                Exemplo Representativo Numérico
+              </span>
+              <h3 className="text-base sm:text-lg font-bold text-white">
+                Simulação Ilustrativa da Operação
+              </h3>
+            </div>
+            <span className="text-[11px] text-slate-400 font-mono">
+              Base de cálculo real · Amortização com parcelas fixas
             </span>
-            <h3 className="text-base font-bold text-white">
-              Exemplo representativo
-            </h3>
           </div>
-          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-mono">
-            {FINANCIAL_TEXTS.representativeExample}
-          </p>
-          <div className="mt-3 pt-3 border-t border-slate-800 text-[11px] text-slate-400">
-            * As parcelas, encargos e condições finais serão discriminados no Contrato de Cédula de Crédito Bancário (CCB) emitido nos termos da regulamentação aplicável do Banco Central do Brasil.
+
+          {/* Grid com os parâmetros numéricos exatos */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
+            <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60">
+              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+                Valor do Crédito
+              </span>
+              <span className="text-sm sm:text-base font-bold text-white font-mono">
+                {REPRESENTATIVE_EXAMPLE_DATA.amountDisplay}
+              </span>
+            </div>
+
+            <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60">
+              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+                Prazo de Pagamento
+              </span>
+              <span className="text-sm sm:text-base font-bold text-white font-mono">
+                {REPRESENTATIVE_EXAMPLE_DATA.termDisplay}
+              </span>
+            </div>
+
+            <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60">
+              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+                Taxa Mensal
+              </span>
+              <span className="text-sm sm:text-base font-bold text-emerald-400 font-mono">
+                {REPRESENTATIVE_EXAMPLE_DATA.monthlyRateDisplay}
+              </span>
+            </div>
+
+            <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60">
+              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+                Taxa Anual Equiv.
+              </span>
+              <span className="text-xs sm:text-sm font-bold text-slate-200 font-mono">
+                {REPRESENTATIVE_EXAMPLE_DATA.annualRateDisplay}
+              </span>
+            </div>
+
+            <div className="p-3 bg-blue-950/60 rounded-xl border border-blue-500/30">
+              <span className="text-[10px] uppercase font-bold text-blue-300 block mb-1">
+                Parcela Estimada
+              </span>
+              <span className="text-sm sm:text-base font-black text-blue-200 font-mono">
+                {REPRESENTATIVE_EXAMPLE_DATA.installmentDisplay}
+              </span>
+            </div>
+
+            <div className="p-3 bg-slate-800/80 rounded-xl border border-slate-700/60">
+              <span className="text-[10px] uppercase font-bold text-slate-400 block mb-1">
+                Total Estimado
+              </span>
+              <span className="text-sm sm:text-base font-bold text-white font-mono">
+                {REPRESENTATIVE_EXAMPLE_DATA.totalAmountDisplay}
+              </span>
+            </div>
+          </div>
+
+          {/* Texto descritivo exigido pelas políticas */}
+          <div className="p-4 bg-slate-800/40 rounded-xl border border-slate-800 mb-4">
+            <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-mono">
+              <strong>Exemplo representativo:</strong> {FINANCIAL_TEXTS.representativeExample}
+            </p>
+          </div>
+
+          {/* Explicação de CET, Tributos e Ausência de Adiantamento */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px] text-slate-400 pt-2 border-t border-slate-800/80">
+            <div className="flex items-start gap-2">
+              <Info className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+              <span>
+                <strong>CET e encargos:</strong> O Custo Efetivo Total (CET), o IOF e eventuais despesas da operação serão informados detalhadamente na proposta individual antes da contratação.
+              </span>
+            </div>
+            <div className="flex items-start gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+              <span>
+                <strong>Segurança:</strong> A SANTS nunca solicita pagamento antecipado, depósito de garantia ou taxa de cartório para aprovação ou liberação de crédito.
+              </span>
+            </div>
           </div>
         </div>
 

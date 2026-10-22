@@ -8,11 +8,12 @@
  */
 
 // 1. CANAIS DE CONTATO
-// Número oficial no formato internacional com DDI e DDD (ex: "5511999999999")
-export const DEFAULT_WHATSAPP_NUMBER = "";
+// Número oficial no formato internacional com DDI e DDD (55 + 11 + 962433641)
+export const DEFAULT_WHATSAPP_NUMBER = "5511962433641";
+export const DISPLAY_PHONE_NUMBER = "(11) 96243-3641";
 
 // E-mail oficial institucional de atendimento aos clientes
-export const DEFAULT_CONTACT_EMAIL = "";
+export const DEFAULT_CONTACT_EMAIL = "contato@santscredito.online";
 
 // 2. DADOS INSTITUCIONAIS OFICIAIS
 export const INSTITUTIONAL_DATA = {
@@ -82,6 +83,34 @@ export const TIKTOK_POLICY_VERIFICATION = {
   },
 };
 
+// ============================================================================
+// EXEMPLO REPRESENTATIVO NUMÉRICO (EXIGÊNCIA TIKTOK ADS & BANCO CENTRAL)
+// Cálculo matemático real (Sistema Price / amortização com parcelas fixas):
+// - Valor solicitado de referência: R$ 10.000,00
+// - Prazo: 24 meses
+// - Taxa mensal de referência: 1,35% ao mês
+// - Taxa anual equivalente: a partir de aproximadamente 17,46% ao ano
+// - Parcela mensal estimada: R$ 490,59
+// - Total estimado a pagar: R$ 11.774,16 (sendo R$ 1.774,16 em juros)
+// - CET e IOF: discriminados detalhadamente na proposta antes da contratação
+// ============================================================================
+export const REPRESENTATIVE_EXAMPLE_DATA = {
+  amount: 10000,
+  amountDisplay: "R$ 10.000,00",
+  termMonths: 24,
+  termDisplay: "24 meses",
+  monthlyRate: 1.35,
+  monthlyRateDisplay: "1,35% ao mês",
+  annualEquivalentRate: 17.46,
+  annualRateDisplay: "A partir de aprox. 17,46% ao ano",
+  installmentAmount: 490.59,
+  installmentDisplay: "R$ 490,59",
+  totalAmount: 11774.16,
+  totalAmountDisplay: "R$ 11.774,16",
+  interestTotal: 1774.16,
+  interestTotalDisplay: "R$ 1.774,16",
+};
+
 // Textos padronizados de transparência financeira
 export const FINANCIAL_TEXTS = {
   monthlyInterestDisplay: `A partir de ${CREDIT_CONFIG.monthlyInterestFrom.toFixed(2).replace('.', ',')}% ao mês`,
@@ -107,7 +136,7 @@ export const FINANCIAL_TEXTS = {
   },
 
   representativeExample:
-    "Exemplo representativo: as parcelas, o valor total e o CET dependem das condições efetivamente disponibilizadas após a análise. Antes de qualquer contratação, o cliente receberá a proposta com taxa, CET, prazo, parcelas, custos aplicáveis e valor total da operação.",
+    "Para um crédito de R$ 10.000, com prazo de 24 meses e taxa de 1,35% ao mês (equivalente a partir de aproximadamente 17,46% ao ano), a parcela estimada seria de aproximadamente R$ 490,59, com valor total aproximado de R$ 11.774,16. O CET e eventuais custos aplicáveis serão informados na proposta antes da contratação. As condições efetivas podem variar conforme modalidade, perfil e análise.",
 };
 
 // Helper para ler override do WhatsApp e Email caso o operador configure no painel de testes local
@@ -135,3 +164,22 @@ export function formatCurrencyBRL(value: number): string {
     maximumFractionDigits: 0,
   }).format(value);
 }
+
+export function formatPhoneDisplay(number: string): string {
+  if (!number) return DISPLAY_PHONE_NUMBER;
+  const clean = number.replace(/\D/g, '');
+  if (clean.length === 13 && clean.startsWith('55')) {
+    const ddd = clean.slice(2, 4);
+    const part1 = clean.slice(4, 9);
+    const part2 = clean.slice(9, 13);
+    return `(${ddd}) ${part1}-${part2}`;
+  }
+  if (clean.length === 11) {
+    const ddd = clean.slice(0, 2);
+    const part1 = clean.slice(2, 7);
+    const part2 = clean.slice(7, 11);
+    return `(${ddd}) ${part1}-${part2}`;
+  }
+  return number;
+}
+

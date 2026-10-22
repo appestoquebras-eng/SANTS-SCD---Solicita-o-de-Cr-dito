@@ -16,8 +16,8 @@ interface SimulatorHeroProps {
 export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onOpenConfig }) => {
   const [profile, setProfile] = useState<'PF' | 'PJ'>('PF');
   const [amount, setAmount] = useState<number>(SIMULATOR_CONFIG.PF.defaultAmount);
-  // Não pré-selecionado por padrão para compliance estrito com privacidade e TikTok Ads
-  const [agreedPrivacy, setAgreedPrivacy] = useState<boolean>(false);
+  // Marcado como padrão conforme preferência da operação
+  const [agreedPrivacy, setAgreedPrivacy] = useState<boolean>(true);
   const [showConfigNotice, setShowConfigNotice] = useState<boolean>(false);
 
   const currentConfig = SIMULATOR_CONFIG[profile];

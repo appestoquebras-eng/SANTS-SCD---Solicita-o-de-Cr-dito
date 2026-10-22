@@ -4,6 +4,7 @@ import {
   INSTITUTIONAL_DATA,
   getActiveWhatsAppNumber,
   getActiveContactEmail,
+  formatPhoneDisplay,
 } from '../config/creditConfig';
 
 interface FooterProps {
@@ -105,15 +106,23 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="space-y-2 text-xs">
               <div>
                 <span className="text-slate-500 block text-[11px]">WhatsApp Oficial:</span>
-                <span className="text-slate-200 font-mono">
-                  {whatsappNumber && whatsappNumber.length > 5 ? whatsappNumber : "Atendimento via WhatsApp"}
-                </span>
+                <a
+                  href={`https://wa.me/${whatsappNumber.replace(/\D/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-slate-200 hover:text-emerald-400 font-mono transition-colors inline-block"
+                >
+                  {formatPhoneDisplay(whatsappNumber)}
+                </a>
               </div>
               <div>
                 <span className="text-slate-500 block text-[11px]">E-mail de Atendimento:</span>
-                <span className="text-slate-200 font-mono">
-                  {contactEmail && contactEmail.includes('@') ? contactEmail : "Atendimento oficial ao cliente"}
-                </span>
+                <a
+                  href={`mailto:${contactEmail}`}
+                  className="text-slate-200 hover:text-blue-400 font-mono transition-colors inline-block"
+                >
+                  {contactEmail || "contato@santscredito.online"}
+                </a>
               </div>
               <div>
                 <a

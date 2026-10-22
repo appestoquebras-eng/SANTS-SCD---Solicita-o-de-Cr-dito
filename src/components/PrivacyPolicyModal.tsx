@@ -152,7 +152,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
               <p><strong>Controlador:</strong> {INSTITUTIONAL_DATA.legalName}</p>
               <p><strong>CNPJ:</strong> {INSTITUTIONAL_DATA.cnpj}</p>
               <p><strong>Localização:</strong> {INSTITUTIONAL_DATA.city}</p>
-              <p><strong>Canal de Atendimento:</strong> Disponível diretamente pela plataforma e pelo WhatsApp oficial da instituição.</p>
+              <p><strong>Canal de Atendimento:</strong> Disponível diretamente pela plataforma, pelo WhatsApp oficial: (11) 96243-3641 e pelo e-mail: contato@santscredito.online.</p>
             </div>
           </section>
 
