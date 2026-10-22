@@ -5,7 +5,10 @@
  * CNPJ: 52.440.987/0001-69
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
+import { MeasurementConsent } from './components/MeasurementConsent';
+const AttendantPanel = lazy(() => import('./components/AttendantPanel'));
+export default function App() { return /^\/painel(?:\/|$)/.test(location.pathname) ? <Suspense fallback={<p>Carregando painel…</p>}><AttendantPanel /></Suspense> : <Landing />; }
 import { Header } from './components/Header';
 import { SimulatorHero } from './components/SimulatorHero';
 import { HowItWorks } from './components/HowItWorks';
@@ -17,9 +20,8 @@ import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 import { PrivacyPolicyModal } from './components/PrivacyPolicyModal';
 import { TermsOfUseModal } from './components/TermsOfUseModal';
-import { ConfigModal } from './components/ConfigModal';
 
-export default function App() {
+function Landing() {
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
@@ -103,6 +105,7 @@ export default function App() {
         onOpenConfig={() => setIsConfigOpen(true)}
       />
 
+      <MeasurementConsent />
       {/* Full Modal Views */}
       <PrivacyPolicyModal
         isOpen={isPrivacyOpen}
@@ -124,11 +127,7 @@ export default function App() {
         }}
       />
 
-      <ConfigModal
-        isOpen={isConfigOpen}
-        onClose={() => setIsConfigOpen(false)}
-        onSaved={handleConfigSaved}
-      />
+
 
     </div>
   );
