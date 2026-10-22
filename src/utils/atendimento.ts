@@ -7,11 +7,7 @@ declare global {
   }
 }
 export function analyticsAllowed() {
-  try {
-    return localStorage.getItem("sants_measurement") === "yes";
-  } catch {
-    return false;
-  }
+  return !isPanel();
 }
 export function loadPixel() {
   if (isPanel() || !analyticsAllowed() || window.ttq) return;
