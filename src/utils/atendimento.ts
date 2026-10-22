@@ -125,7 +125,7 @@ export async function goToWhatsApp(message: string) {
       try {
         loadPixel();
         window.ttq?.track(
-          "Contact",
+          "Lead",
           { content_name: "chamar_no_whatsapp" },
           { event_id: data.eventId },
         );
