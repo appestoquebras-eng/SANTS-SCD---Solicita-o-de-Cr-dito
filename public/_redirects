@@ -1,2 +1,1 @@
-/painel /index.html 200
-/painel/* /index.html 200
+# SPA routing uses the default Cloudflare Pages fallback (no top-level 404.html).
