@@ -8,7 +8,7 @@ Projeto: `santscredito`. Repositório: `appestoquebras-eng/SANTS-SCD---Solicita-
 2. Configurar no projeto Pages, em Settings → Variables and Secrets, um **Secret** chamado `ADMIN_PASSWORD`, com a senha escolhida pelo proprietário. Não usar prefixo VITE_, não colocar a senha no GitHub e não enviar como variável de build pública. Se a configuração de bindings no painel for usada, o nome do binding D1 deve ser **DB** apontando para **sants-atendimento**.
 3. Publicar o código. Comando de build: `npm run build`; saída: `dist`. A pasta **functions** fica na raiz do repositório, fora de dist. Wrangler configura o binding DB no deploy. Production e Preview precisam de segredos próprios; evite conectar previews públicos ao banco de produção.
 4. Abrir `/painel`, entrar e cadastrar o nome e telefone reais dos atendentes. Nenhum número de exemplo é inserido automaticamente. Salvar passa a valer imediatamente no servidor, sem novo build.
-5. Verificar o domínio com e sem www, o painel após reload e o evento Contact em Test Events no TikTok. Não considerar o pixel validado em produção antes dessa etapa.
+5. Verificar o domínio com e sem www, o painel após reload e o evento Lead em Test Events no TikTok. Não considerar o pixel validado em produção antes dessa etapa.
 
 ## Uso
 
@@ -19,8 +19,8 @@ O mesmo navegador mantém o atendente enquanto ativo. Um retorno não incrementa
 ## Identificação e medição
 
 - Cookie first-party `sants_visitor` HttpOnly, Secure em HTTPS, SameSite=Lax, validade de um ano; compartilhado entre raiz/www. Sem identificação por CPF, telefone, impressão digital ou IP do cliente. Outro navegador, cookie apagado ou dispositivo novo pode contar novamente.
-- Alocação e avanço do lote acontecem numa única transação SQLite (trigger), com chave única de visitante e histórico. A autorização para tentar emitir Contact é reclamada uma única vez no servidor, inclusive entre abas. Duplo clique no frontend também fica bloqueado.
-- Pixel **DBD3NDBC77U0QK5QBER0**, evento **Contact**, parâmetro genérico `content_name: chamar_no_whatsapp` e event_id estável. Não são enviados valor de crédito, parcelas, perfil PF/PJ, mensagem, nome ou telefone ao TikTok. Os eventos do simulador ficam locais. Configure **Automatic Advanced Matching** e **Enhanced Data Postback** desligados no Events Manager.
+- Alocação e avanço do lote acontecem numa única transação SQLite (trigger), com chave única de visitante e histórico. A autorização para tentar emitir Lead é reclamada uma única vez no servidor, inclusive entre abas. Duplo clique no frontend também fica bloqueado.
+- Pixel **DBD3NDBC77U0QK5QBER0**, evento **Lead**, parâmetro genérico `content_name: chamar_no_whatsapp` e event_id estável. Não são enviados valor de crédito, parcelas, perfil PF/PJ, mensagem, nome ou telefone ao TikTok. Os eventos do simulador ficam locais. Configure **Automatic Advanced Matching** e **Enhanced Data Postback** desligados no Events Manager.
 - Medição depende da escolha opcional e separada do atendimento. Recusar não impede o encaminhamento. `/painel` não carrega o pixel. O SDK do TikTok pode receber dados técnicos próprios, como IP, URL e agente do navegador, quando autorizado.
 - Não há promessa de entrega exatamente uma vez a uma plataforma externa: bloqueadores, falta de rede ou fechamento imediato podem impedir a recepção. A trava privilegia não duplicar a tentativa. O encaminhamento não confirma conversa, mensagem enviada, recebimento ou aprovação de crédito.
 - A navegação usa `location.assign` para **wa.me**, na mesma aba, sem popup e sem atraso artificial. A abertura do aplicativo depende do sistema, navegador e instalação do WhatsApp; pode aparecer uma confirmação do próprio celular.
