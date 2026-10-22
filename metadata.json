@@ -1,0 +1,6 @@
+{
+  "name": "SANTS SCD - Solicitação de Crédito",
+  "description": "Consulte opções de crédito e envie sua solicitação para análise. SANTS Sociedade de Crédito Direto S.A., autorizada pelo Banco Central do Brasil.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
