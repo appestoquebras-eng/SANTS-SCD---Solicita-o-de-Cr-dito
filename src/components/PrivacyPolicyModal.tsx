@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, ShieldCheck } from 'lucide-react';
-import { INSTITUTIONAL_DATA, getActiveContactEmail, getActiveWhatsAppNumber } from '../config/creditConfig';
+import { INSTITUTIONAL_DATA, getActiveContactEmail } from '../config/creditConfig';
 
 interface PrivacyPolicyModalProps {
   isOpen: boolean;
@@ -11,7 +11,6 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
   if (!isOpen) return null;
 
   const contactEmail = getActiveContactEmail();
-  const whatsappNumber = getActiveWhatsAppNumber();
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
@@ -152,7 +151,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({ isOpen, 
               <p><strong>Controlador:</strong> {INSTITUTIONAL_DATA.legalName}</p>
               <p><strong>CNPJ:</strong> {INSTITUTIONAL_DATA.cnpj}</p>
               <p><strong>Localização:</strong> {INSTITUTIONAL_DATA.city}</p>
-              <p><strong>Canal de Atendimento:</strong> Disponível diretamente pela plataforma, pelo WhatsApp oficial: (11) 96243-3641 e pelo e-mail: contato@santscredito.online.</p>
+              <p><strong>Canal de Atendimento:</strong> Disponível diretamente pela plataforma e pelo e-mail: contato@santscredito.online.</p>
             </div>
           </section>
 

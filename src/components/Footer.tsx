@@ -1,10 +1,8 @@
 import React from 'react';
-import { ShieldCheck, MapPin, Settings } from 'lucide-react';
+import { ShieldCheck, MapPin } from 'lucide-react';
 import {
   INSTITUTIONAL_DATA,
-  getActiveWhatsAppNumber,
   getActiveContactEmail,
-  formatPhoneDisplay,
 } from '../config/creditConfig';
 
 interface FooterProps {
@@ -18,7 +16,6 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenTerms,
   onOpenConfig,
 }) => {
-  const whatsappNumber = getActiveWhatsAppNumber();
   const contactEmail = getActiveContactEmail();
 
   return (
@@ -105,16 +102,6 @@ export const Footer: React.FC<FooterProps> = ({
             </h4>
             <div className="space-y-2 text-xs">
               <div>
-                <span className="text-slate-500 block text-[11px]">WhatsApp Oficial:</span>
-                <a
-                  href="#simulador"
-                  rel="noopener noreferrer"
-                  className="text-slate-200 hover:text-emerald-400 font-mono transition-colors inline-block"
-                >
-                  {formatPhoneDisplay(whatsappNumber)}
-                </a>
-              </div>
-              <div>
                 <span className="text-slate-500 block text-[11px]">E-mail de Atendimento:</span>
                 <a
                   href={`mailto:${contactEmail}`}
@@ -131,7 +118,6 @@ export const Footer: React.FC<FooterProps> = ({
                   Contato & Início de Solicitação ↑
                 </a>
               </div>
-
             </div>
           </div>
 

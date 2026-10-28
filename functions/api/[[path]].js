@@ -52,8 +52,14 @@ async function body(request) {
 }
 export function normalizePhone(input) {
   let n = String(input || "").replace(/\D/g, "");
-  if (n.length === 10 || n.length === 11) n = "55" + n;
-  if (!/^55[1-9][0-9](?:[2-5][0-9]{7}|9[0-9]{8})$/.test(n))
+  n = n.replace(/^0+/, "");
+  if (n.startsWith("55") && (n.length === 12 || n.length === 13)) {
+    // Já possui o DDI 55 com 10 ou 11 dígitos nacionais
+  } else if (n.length === 10 || n.length === 11) {
+    // DDD (2 dígitos) + número com 8 ou 9 dígitos
+    n = "55" + n;
+  }
+  if (!/^55[1-9][0-9]\d{8,9}$/.test(n))
     fail("Informe um telefone brasileiro válido com DDD.");
   return n;
 }

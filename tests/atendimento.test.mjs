@@ -138,6 +138,15 @@ test("login protegido, origem, senha, sessão, formato e normalização de telef
     (await s.admin("agents", "POST", { name: "Outro", phone: a.phone })).status,
     409,
   );
+  // Testa número com 8 dígitos e DDD 31 fornecido com 55 (ex: 553190915057)
+  const c = await s.add("Carlos", "553190915057");
+  assert.equal(c.phone, "553190915057");
+  // Testa número com 8 dígitos e DDD 11 sem 55 (ex: 1187654321)
+  const d = await s.add("Fernanda", "1187654321");
+  assert.equal(d.phone, "551187654321");
+  // Testa número com 9 dígitos e zero à esquerda no DDD (ex: 011987654321)
+  const e = await s.add("Gabriel", "011987654321");
+  assert.equal(e.phone, "5511987654321");
   assert.equal(
     (await s.admin("agents", "POST", { name: "Ruim", phone: "123" })).status,
     400,

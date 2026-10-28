@@ -186,7 +186,7 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
     const formattedAmount = formatCurrencyBRL(amount);
     const formattedPayment = formatCurrencyExactBRL(estimatedPayment);
 
-    const message = `Olá! Vim pelo site da SANTS e gostaria de iniciar uma solicitação para análise de crédito.\n\nPerfil: ${profileText}\nValor de interesse: ${formattedAmount}\nPrazo selecionado: ${term} meses\nParcela mensal estimada: ${formattedPayment}\n\nEstou ciente de que esta é uma estimativa e que a solicitação está sujeita à análise. Taxas, CET, custos, valores e condições definitivas podem variar.`;
+    const message = `Olá! Vim pelo site e gostaria de iniciar uma solicitação para análise de crédito.\n\nPerfil: ${profileText}\nValor de interesse: ${formattedAmount}\nPrazo selecionado: ${term} meses\nParcela mensal estimada: ${formattedPayment}\n\nEstou ciente de que esta é uma estimativa e que a solicitação está sujeita à análise.`;
 
     routingRef.current = true; setRouting(true);
     try { await goToWhatsApp(message); }

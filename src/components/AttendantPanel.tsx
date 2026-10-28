@@ -17,6 +17,16 @@ const periods = [
   ["30", "30 dias"],
   ["total", "Total"],
 ];
+function formatDisplayPhone(p: string) {
+  const digits = String(p || "").replace(/\D/g, "");
+  if (digits.length === 12 && digits.startsWith("55")) {
+    return `+55 (${digits.slice(2, 4)}) ${digits.slice(4, 8)}-${digits.slice(8)}`;
+  }
+  if (digits.length === 13 && digits.startsWith("55")) {
+    return `+55 (${digits.slice(2, 4)}) ${digits.slice(4, 9)}-${digits.slice(9)}`;
+  }
+  return p ? `+${digits}` : "";
+}
 export default function AttendantPanel() {
   const [token, setToken] = useState(""),
     [password, setPassword] = useState(""),
@@ -255,15 +265,18 @@ export default function AttendantPanel() {
                   />
                 </label>
                 <label>
-                  Telefone com DDD
+                  Telefone com DDD / WhatsApp
                   <input
                     inputMode="tel"
-                    placeholder="(11) 99999-9999"
+                    placeholder="Ex: 553190915057 ou (11) 99999-9999"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     required
-                    maxLength={25}
+                    maxLength={30}
                   />
+                  <small className="panel-field-hint">
+                    Aceita com ou sem 55, DDD 11 a 99, 8 ou 9 dígitos (ex: 553190915057, 3190915057, 11999999999).
+                  </small>
                 </label>
                 <button className="primary" disabled={busy}>
                   {editing ? "Salvar alterações" : "Adicionar atendente"}
@@ -318,7 +331,7 @@ export default function AttendantPanel() {
                             <td>{a.position}</td>
                             <td>
                               <strong>{a.name}</strong>
-                              <small>+{a.phone}</small>
+                              <small>{formatDisplayPhone(a.phone)}</small>
                             </td>
                             <td>
                               <span className={a.active ? "active" : "paused"}>

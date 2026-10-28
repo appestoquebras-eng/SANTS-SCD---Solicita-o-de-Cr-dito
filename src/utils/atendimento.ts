@@ -115,7 +115,11 @@ export async function goToWhatsApp(message: string) {
   try {
     await initVisitor();
     const data = await api("route", "POST", { analytics: analyticsAllowed() });
-    if (!/^55\d{10,11}$/.test(data.phone))
+    let phone = String(data.phone || "").replace(/\D/g, "");
+    if ((phone.length === 10 || phone.length === 11) && !phone.startsWith("55")) {
+      phone = "55" + phone;
+    }
+    if (!/^55\d{10,11}$/.test(phone))
       throw new Error("Número de atendimento inválido.");
     if (data.trackContact && analyticsAllowed()) {
       try {
@@ -128,7 +132,7 @@ export async function goToWhatsApp(message: string) {
       } catch {}
     }
     location.assign(
-      "https://wa.me/" + data.phone + "?text=" + encodeURIComponent(message),
+      "https://wa.me/" + phone + "?text=" + encodeURIComponent(message),
     );
   } finally {
     routing = false;
