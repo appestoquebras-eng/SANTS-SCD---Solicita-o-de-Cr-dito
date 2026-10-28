@@ -4,6 +4,10 @@
 
 Projeto: `santscredito`. Repositório: `appestoquebras-eng/SANTS-SCD---Solicita-o-de-Cr-dito`.
 
+Domínio principal: `https://santscreditoltda.online/`. A troca de domínio usa o mesmo projeto Pages, banco D1 e pixel TikTok. O e-mail de contato existente permanece `contato@santscredito.online`; alterar o endereço do site não cria uma nova caixa de e-mail.
+
+Na migração, conectar raiz e `www` no Pages, aguardar DNS/SSL e só então atualizar os destinos dos anúncios, preservando UTMs. Verificar PageView e Lead no Test Events. Cookies não podem ser compartilhados entre os dois domínios independentes; um visitante que muda de domínio pode receber um novo identificador.
+
 1. Aplicar a migração no banco D1 **sants-atendimento** (ID já confirmado em `wrangler.jsonc`): `npm run db:remote`. Alternativamente, executar o conteúdo de `migrations/0001_atendimento.sql` no Console D1. Faça isso apenas uma vez num banco vazio. Não execute novamente sobre tabelas existentes.
 2. Configurar no projeto Pages, em Settings → Variables and Secrets, um **Secret** chamado `ADMIN_PASSWORD`, com a senha escolhida pelo proprietário. Não usar prefixo VITE_, não colocar a senha no GitHub e não enviar como variável de build pública. Se a configuração de bindings no painel for usada, o nome do binding D1 deve ser **DB** apontando para **sants-atendimento**.
 3. Publicar o código. Comando de build: `npm run build`; saída: `dist`. A pasta **functions** fica na raiz do repositório, fora de dist. Wrangler configura o binding DB no deploy. Production e Preview precisam de segredos próprios; evite conectar previews públicos ao banco de produção.
