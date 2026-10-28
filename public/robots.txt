@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://santscredito.online/sitemap.xml
+Sitemap: https://santscreditoltda.online/sitemap.xml
 
 Disallow: /painel
 Disallow: /api/
