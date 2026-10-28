@@ -33,10 +33,10 @@ function cookie(request) {
 }
 function visitorCookie(request, id) {
   const host = new URL(request.url).hostname;
-  const domain =
-    host === "santscredito.online" || host === "www.santscredito.online"
-      ? "; Domain=santscredito.online"
-      : "";
+  const baseDomain = ["santscredito.online", "santscreditoltda.online"].find(
+    (domain) => host === domain || host === `www.${domain}`,
+  );
+  const domain = baseDomain ? `; Domain=${baseDomain}` : "";
   return `sants_visitor=${id}; Path=/; HttpOnly; SameSite=Lax; Max-Age=31536000${domain}${new URL(request.url).protocol === "https:" ? "; Secure" : ""}`;
 }
 async function body(request) {
