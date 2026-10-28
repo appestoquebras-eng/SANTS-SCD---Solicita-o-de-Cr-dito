@@ -16,6 +16,22 @@ const source = await build({
 const schema = (
   await readFile("migrations/0001_atendimento.sql", "utf8")
 ).replace(/--[^\n]*/g, "");
+
+test("cookie de visitante usa somente o domínio correspondente, com raiz e www", async (t) => {
+  const { mf } = await setup(t);
+  for (const domain of ["santscredito.online", "santscreditoltda.online"]) {
+    for (const host of [domain, `www.${domain}`]) {
+      const res = await mf.dispatchFetch(`https://${host}/api/visitor`);
+      assert.equal(res.status, 200);
+      const cookie = res.headers.get("Set-Cookie");
+      assert.ok(cookie.includes(`; Domain=${domain}; Secure`));
+      assert.ok(cookie.includes("; HttpOnly; SameSite=Lax;"));
+    }
+  }
+  const preview = await mf.dispatchFetch("https://santscredito.pages.dev/api/visitor");
+  assert.equal(preview.status, 200);
+  assert.ok(!preview.headers.get("Set-Cookie").includes("; Domain="));
+});
 function statements(text) {
   const result = [];
   let buffer = "";
