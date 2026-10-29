@@ -8,7 +8,12 @@
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { MeasurementConsent } from './components/MeasurementConsent';
 const AttendantPanel = lazy(() => import('./components/AttendantPanel'));
-export default function App() { return /^\/painel(?:\/|$)/.test(location.pathname) ? <Suspense fallback={<p>Carregando painel…</p>}><AttendantPanel /></Suspense> : <Landing />; }
+const AttendantRedirect = lazy(() => import('./components/AttendantRedirect'));
+export default function App() {
+  if (/^\/painel(?:\/|$)/.test(location.pathname)) return <Suspense fallback={<p>Carregando painel…</p>}><AttendantPanel /></Suspense>;
+  if (/^\/atendente\/?$/.test(location.pathname)) return <Suspense fallback={<p>Conectando ao atendimento…</p>}><AttendantRedirect /></Suspense>;
+  return <Landing />;
+}
 import { Header } from './components/Header';
 import { SimulatorHero } from './components/SimulatorHero';
 import { HowItWorks } from './components/HowItWorks';
