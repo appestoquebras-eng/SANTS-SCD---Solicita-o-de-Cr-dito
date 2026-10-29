@@ -8,3 +8,7 @@
   Cache-Control: no-store
 /api/*
   Cache-Control: no-store
+
+/atendente*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store

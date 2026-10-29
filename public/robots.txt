@@ -5,3 +5,4 @@ Sitemap: https://santscreditoltda.online/sitemap.xml
 
 Disallow: /painel
 Disallow: /api/
+Disallow: /atendente

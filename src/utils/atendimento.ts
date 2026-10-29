@@ -113,6 +113,32 @@ export async function goToWhatsApp(message: string) {
   if (routing) return;
   routing = true;
   try {
+    sessionStorage.setItem("sants_handoff", JSON.stringify({ message, at: Date.now() }));
+    const next = new URL("/atendente", location.origin);
+    const current = new URL(location.href);
+    for (const key of ["ttclid", "tt_test_id", "utm_source", "utm_medium", "utm_campaign", "utm_id", "utm_content", "utm_term"]) {
+      const value = current.searchParams.get(key);
+      if (value) next.searchParams.set(key, value);
+    }
+    location.assign(next.pathname + next.search);
+  } finally {
+    routing = false;
+  }
+}
+
+export function handoffMessage() {
+  const fallback = "Olá! Vim pelo site e gostaria de iniciar uma solicitação para análise de crédito.";
+  try {
+    const saved = JSON.parse(sessionStorage.getItem("sants_handoff") || "null");
+    if (saved && typeof saved.message === "string" && saved.message.length <= 4000 &&
+        typeof saved.at === "number" && Date.now() - saved.at >= 0 && Date.now() - saved.at < 30 * 60000) return saved.message;
+  } catch {}
+  return fallback;
+}
+
+let assignment: Promise<{ href: string; trackContact: boolean; eventId: string }> | undefined;
+export function assignAttendant() {
+  if (!assignment) assignment = (async () => {
     await initVisitor();
     const data = await api("route", "POST", { analytics: analyticsAllowed() });
     let phone = String(data.phone || "").replace(/\D/g, "");
@@ -121,20 +147,21 @@ export async function goToWhatsApp(message: string) {
     }
     if (!/^55\d{10,11}$/.test(phone))
       throw new Error("Número de atendimento inválido.");
-    if (data.trackContact && analyticsAllowed()) {
-      try {
-        loadPixel();
-        window.ttq?.track(
-          "Lead",
-          { content_name: "chamar_no_whatsapp" },
-          { event_id: data.eventId },
-        );
-      } catch {}
-    }
-    location.assign(
-      "https://wa.me/" + phone + "?text=" + encodeURIComponent(message),
-    );
-  } finally {
-    routing = false;
-  }
+    return { href: "https://wa.me/" + phone + "?text=" + encodeURIComponent(handoffMessage()),
+      trackContact: data.trackContact === true, eventId: data.eventId };
+  })().catch((error) => { assignment = undefined; throw error; });
+  return assignment;
+}
+
+export async function trackAttendantEntry(data: { trackContact: boolean; eventId: string }) {
+  if (!data.trackContact || !analyticsAllowed()) return;
+  try {
+    loadPixel();
+    // A fresh routing page must give the asynchronous SDK time to initialize.
+    await new Promise<void>((resolve) => {
+      const timer = window.setTimeout(resolve, 1500);
+      window.ttq?.ready(() => { window.clearTimeout(timer); resolve(); });
+    });
+    window.ttq?.track("Lead", { content_name: "entrada_atendente" }, { event_id: data.eventId });
+  } catch {}
 }
