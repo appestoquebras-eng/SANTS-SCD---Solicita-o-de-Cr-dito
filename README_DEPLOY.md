@@ -24,14 +24,14 @@ O mesmo navegador mantém o atendente enquanto ativo. Um retorno não incrementa
 
 - Cookie first-party `sants_visitor` HttpOnly, Secure em HTTPS, SameSite=Lax, validade de um ano; compartilhado entre raiz/www. Sem identificação por CPF, telefone, impressão digital ou IP do cliente. Outro navegador, cookie apagado ou dispositivo novo pode contar novamente.
 - Alocação e avanço do lote acontecem numa única transação SQLite (trigger), com chave única de visitante e histórico. A autorização para tentar emitir Lead é reclamada uma única vez no servidor, inclusive entre abas. Duplo clique no frontend também fica bloqueado.
-- Pixel **DBD3NDBC77U0QK5QBER0**, evento **Lead**, parâmetro genérico `content_name: chamar_no_whatsapp` e event_id estável. Não são enviados valor de crédito, parcelas, perfil PF/PJ, mensagem, nome ou telefone ao TikTok. Os eventos do simulador ficam locais. Configure **Automatic Advanced Matching** e **Enhanced Data Postback** desligados no Events Manager.
-- Medição é carregada automaticamente na página principal. `/painel` não carrega o pixel. O SDK do TikTok pode receber dados técnicos próprios, como IP, URL e agente do navegador, ao acessar a página principal.
+- Pixel **DBD3NDBC77U0QK5QBER0**, evento **Lead**, parâmetro genérico `content_name: entrada_atendente` e event_id estável. Não são enviados valor de crédito, parcelas, perfil PF/PJ, mensagem, nome ou telefone ao TikTok. Os eventos do simulador ficam locais. Configure **Automatic Advanced Matching** e **Enhanced Data Postback** desligados no Events Manager.
+- Medição é carregada automaticamente na página principal e em `/atendente`. `/painel` não carrega o pixel. O SDK do TikTok pode receber dados técnicos próprios, como IP, URL e agente do navegador, ao acessar a página principal.
 - Não há promessa de entrega exatamente uma vez a uma plataforma externa: bloqueadores, falta de rede ou fechamento imediato podem impedir a recepção. A trava privilegia não duplicar a tentativa. O encaminhamento não confirma conversa, mensagem enviada, recebimento ou aprovação de crédito.
-- A navegação usa `location.assign` para **wa.me**, na mesma aba, sem popup e sem atraso artificial. A abertura do aplicativo depende do sistema, navegador e instalação do WhatsApp; pode aparecer uma confirmação do próprio celular.
+- A landing guarda a mensagem da simulação em sessionStorage por até 30 minutos e abre `/atendente` na mesma aba. A mensagem não aparece na URL nem é enviada à API ou ao TikTok. Essa página consulta a fila D1, registra o Lead uma vez na entrada com atribuição válida e abre **wa.me** usando `location.replace`. Aguarda o SDK por até 1,5 segundo, sem bloquear o atendimento caso ele falhe. Há botão manual para navegadores que bloqueiam abertura automática. Acesso direto sem simulação usa mensagem genérica. A abertura do aplicativo depende do sistema, navegador e instalação do WhatsApp; pode aparecer uma confirmação do próprio celular.
 
 ## Desenvolvimento e testes
 
-`npm ci` → `npm test` → `npm run lint` → `npm run build`.
+`npm install` → `npm test` → `npm run lint` → `npm run build`.
 
 Os testes usam o runtime Cloudflare/Miniflare com D1 local: concorrência, lotes 1/5/10, repetição, medição única, pausas/exclusão/edição, banco vazio, autenticação, origem, rate limit e datas. Nenhum teste envia mensagem ou evento real ao TikTok.
 
@@ -42,3 +42,7 @@ Para teste visual completo: `npm run db:local`, criar `.dev.vars` (ignorado pelo
 As sessões duram 30 minutos e o token fica somente na memória da página, exigindo senha novamente ao recarregar ou abrir outra aba. API admin sempre verifica o token no servidor. Há limitação persistente de dez tentativas de login por 15 minutos, baseada em hash do IP técnico; o IP bruto não é salvo. Nunca há senha padrão de fallback.
 
 Mantenha D1 com backups/Time Travel e controle de acesso da conta Cloudflare. O histórico de visitantes não tem remoção automática nesta versão para preservar totais e deduplicação; o responsável deve definir e aplicar uma política de retenção adequada. Remover dados de visitantes altera totais e pode permitir que um navegador seja contado de novo.
+
+## Página de encaminhamento /atendente
+
+A configuração dos atendentes, lote e cursor é compartilhada no banco D1, não no navegador. O sessionStorage contém somente o texto temporário daquela simulação. O cliente novo seguinte avança a fila conforme o lote configurado, inclusive entre dispositivos. Retorno do mesmo visitante mantém afinidade e não duplica conversão. Não é usado sorteio ou contador local. A página não mostra lista de atendentes e não permite escolher telefone por parâmetro. Robôs não devem indexá-la.
