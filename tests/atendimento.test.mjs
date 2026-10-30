@@ -238,6 +238,25 @@ test("pausa, exclusão lógica, reatribuição sem duplicar cliente, edição e 
   assert.equal(stats.totals.total, 1);
   assert.equal(stats.agents.find((x) => x.id === b.id).deliveries, 1);
 });
+test("mesmo navegador alterna por clique e deduplica recarga e requisições simultâneas", async (t) => {
+  const s = await setup(t);
+  const a = await s.add("Ana", "11999991111"), b = await s.add("Bia", "11999992222");
+  const cookie = await s.visitor();
+  const route = (handoffId) => s.call("route", { method: "POST", cookie, body: { analytics: true, handoffId } });
+  const firstId = crypto.randomUUID(), secondId = crypto.randomUUID();
+  const duplicate = await Promise.all(Array.from({ length: 10 }, () => route(firstId)));
+  assert.ok(duplicate.every(r => r.status === 200 && r.data.phone === a.phone));
+  assert.equal(duplicate.filter(r => r.data.trackContact).length, 1);
+  const second = await route(secondId);
+  assert.equal(second.data.phone, b.phone);
+  assert.equal(second.data.trackContact, true);
+  assert.notEqual(second.data.eventId, duplicate[0].data.eventId);
+  assert.equal((await route(secondId)).data.trackContact, false);
+  assert.equal((await route(crypto.randomUUID())).data.phone, a.phone);
+  assert.equal((await s.db.prepare("SELECT COUNT(*) n FROM deliveries").first()).n, 3);
+  assert.equal((await route("invalid")).status, 400);
+});
+
 test("filtros de data de São Paulo, consentimento tardio e rate limit", async (t) => {
   const s = await setup(t);
   await s.add("Ana", "11999991111");
