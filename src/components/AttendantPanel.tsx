@@ -206,7 +206,7 @@ export default function AttendantPanel() {
                 >
                   <span>{label}</span>
                   <strong>{stats?.totals?.[key] ?? "—"}</strong>
-                  <small>clientes únicos</small>
+                  <small>atendimentos registrados</small>
                 </button>
               ))}
             </div>
@@ -219,7 +219,7 @@ export default function AttendantPanel() {
               <h2>Distribuição por lote</h2>
               <p>
                 Envie a quantidade definida para um atendente antes de passar ao
-                próximo. Use 1 para alternar a cada cliente novo.
+                próximo. Use 1 para alternar a cada novo clique.
               </p>
               <form
                 className="panel-row"
@@ -232,7 +232,7 @@ export default function AttendantPanel() {
                 }}
               >
                 <label>
-                  Clientes por atendente
+                  Cliques por atendente
                   <input
                     type="number"
                     min={1}
@@ -316,7 +316,7 @@ export default function AttendantPanel() {
                         <th>Ordem</th>
                         <th>Nome / telefone</th>
                         <th>Status</th>
-                        <th>Clientes novos</th>
+                        <th>Atendimentos iniciados</th>
                         <th>Encaminhamentos</th>
                         <th>Ações</th>
                       </tr>
@@ -399,9 +399,9 @@ export default function AttendantPanel() {
                 </div>
               )}
               <p className="panel-note">
-                Um cliente que voltar mantém seu atendente ativo. Se ele for
-                pausado ou excluído, o cliente será reencaminhado sem duplicar o
-                total de clientes únicos.
+                Cada novo clique em Solicitar Análise entra na fila. Recarregar
+                a mesma página de atendimento não avança a fila novamente. Os
+                totais anteriores foram preservados.
               </p>
             </section>
             {!!stats?.agents?.some((a: any) => a.deleted) && (
@@ -411,7 +411,7 @@ export default function AttendantPanel() {
                   .filter((a: any) => a.deleted)
                   .map((a: any) => (
                     <p key={a.id}>
-                      {a.name}: {a.new_clients} clientes novos · {a.deliveries}{" "}
+                      {a.name}: {a.new_clients} atendimentos iniciados · {a.deliveries}{" "}
                       encaminhamentos no período.
                     </p>
                   ))}

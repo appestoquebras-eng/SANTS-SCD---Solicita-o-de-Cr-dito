@@ -115,6 +115,7 @@ export async function goToWhatsApp(message: string) {
   try {
     sessionStorage.setItem("sants_handoff", JSON.stringify({ message, at: Date.now() }));
     const next = new URL("/atendente", location.origin);
+    next.searchParams.set("atendimento", crypto.randomUUID());
     const current = new URL(location.href);
     for (const key of ["ttclid", "tt_test_id", "utm_source", "utm_medium", "utm_campaign", "utm_id", "utm_content", "utm_term"]) {
       const value = current.searchParams.get(key);
@@ -137,10 +138,20 @@ export function handoffMessage() {
 }
 
 let assignment: Promise<{ href: string; trackContact: boolean; eventId: string }> | undefined;
+export function handoffId() {
+  const url = new URL(location.href);
+  const existing = url.searchParams.get("atendimento");
+  if (existing && /^[0-9a-f-]{36}$/i.test(existing)) return existing;
+  const id = crypto.randomUUID();
+  url.searchParams.set("atendimento", id);
+  history.replaceState(null, "", url.pathname + url.search + url.hash);
+  return id;
+}
 export function assignAttendant() {
   if (!assignment) assignment = (async () => {
+    const handoff = handoffId();
     await initVisitor();
-    const data = await api("route", "POST", { analytics: analyticsAllowed() });
+    const data = await api("route", "POST", { analytics: analyticsAllowed(), handoffId: handoff });
     let phone = String(data.phone || "").replace(/\D/g, "");
     if ((phone.length === 10 || phone.length === 11) && !phone.startsWith("55")) {
       phone = "55" + phone;
