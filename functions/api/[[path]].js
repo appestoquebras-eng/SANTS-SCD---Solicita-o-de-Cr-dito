@@ -99,9 +99,13 @@ async function handle({ request, env, params }) {
   }
   if (path === "/api/route" && request.method === "POST") {
     const data = await body(request);
-    const id = cookie(request);
-    if (!validID(id))
+    if (!validID(cookie(request)))
       fail("Recarregue a página para iniciar o atendimento.", 409);
+    if (data.handoffId !== undefined && !validID(data.handoffId))
+      fail("Identificação do atendimento inválida.");
+    // Each simulation click gets a new key; retries/reloads keep that key.
+    // Legacy clients keep cookie affinity until they load the current frontend.
+    const id = data.handoffId || cookie(request);
     const req = uuid(),
       event = uuid(),
       now = Date.now();
