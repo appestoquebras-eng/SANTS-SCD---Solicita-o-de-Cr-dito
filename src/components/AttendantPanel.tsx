@@ -125,6 +125,19 @@ export default function AttendantPanel() {
       await refresh();
       setNotice("Atendente salvo. A distribuição já usa os novos dados.");
     });
+  const clearHistory = () => {
+    if (
+      !confirm(
+        "Tem certeza que deseja limpar todo o histórico? Todos os atendimentos, encaminhamentos e contadores do painel serão zerados permanentemente.",
+      )
+    )
+      return;
+    run(async () => {
+      await request("clear-history", "POST", {});
+      await refresh();
+      setNotice("Histórico limpo com sucesso! Nenhum registro restante no painel.");
+    });
+  };
   return (
     <main className="attendant-panel">
       <div className="panel-wrap">
@@ -137,18 +150,30 @@ export default function AttendantPanel() {
             <p>Distribuição de encaminhamentos para o WhatsApp</p>
           </div>
           {token && (
-            <button
-              onClick={() =>
-                run(async () => {
-                  await request("logout", "POST", {});
-                  setToken("");
-                  setStats(null);
-                  reset();
-                })
-              }
-            >
-              Sair
-            </button>
+            <div className="panel-header-actions">
+              <button
+                type="button"
+                className="danger"
+                disabled={busy}
+                onClick={clearHistory}
+                title="Zera todos os atendimentos e registros do painel"
+              >
+                Limpar histórico
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  run(async () => {
+                    await request("logout", "POST", {});
+                    setToken("");
+                    setStats(null);
+                    reset();
+                  })
+                }
+              >
+                Sair
+              </button>
+            </div>
           )}
         </header>
         {error && (
@@ -195,6 +220,23 @@ export default function AttendantPanel() {
           </form>
         ) : (
           <>
+            <div className="panel-section-header">
+              <div>
+                <h2>Métricas e registros</h2>
+                <p>
+                  Atendimentos e encaminhamentos registrados por período
+                </p>
+              </div>
+              <button
+                type="button"
+                className="danger"
+                disabled={busy}
+                onClick={clearHistory}
+                title="Zerar todos os registros e contadores"
+              >
+                Limpar histórico
+              </button>
+            </div>
             <div className="panel-metrics">
               {periods.map(([key, label]) => (
                 <button

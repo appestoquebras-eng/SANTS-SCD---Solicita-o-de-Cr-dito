@@ -203,6 +203,15 @@ async function handle({ request, env, params }) {
       await sql("DELETE FROM sessions WHERE token_hash=?", tokenHash).run();
       return json({ ok: true });
     }
+    if (path === "/api/admin/clear-history" && request.method === "POST") {
+      await db.batch([
+        sql("DELETE FROM deliveries"),
+        sql("DELETE FROM visitors"),
+        sql("DELETE FROM route_requests"),
+        sql("UPDATE settings SET cursor_agent=NULL, used=0 WHERE id=1"),
+      ]);
+      return json({ ok: true, message: "Histórico zerado com sucesso." });
+    }
     if (path === "/api/admin/config" && request.method === "GET") {
       const res = await db.batch([
         sql("SELECT batch_size FROM settings WHERE id=1"),

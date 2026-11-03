@@ -172,6 +172,28 @@
   font-size: 11px;
   color: #94a8c1;
 }
+.panel-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.panel-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 12px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.panel-section-header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.panel-section-header p {
+  margin: 3px 0 0;
+  font-size: 12px;
+  color: #94a3b8;
+}
 .active {
   color: #6ee7b7;
 }
@@ -180,6 +202,16 @@
 }
 .danger {
   color: #fda4af;
+}
+.attendant-panel button.danger {
+  color: #fca5a5;
+  background: #2a1215;
+  border-color: #5c1d24;
+}
+.attendant-panel button.danger:hover:not(:disabled) {
+  background: #42161b;
+  border-color: #881e28;
+  color: #fecaca;
 }
 .panel-alert,
 .panel-success {

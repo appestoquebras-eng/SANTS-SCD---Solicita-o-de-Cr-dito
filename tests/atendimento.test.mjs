@@ -305,3 +305,28 @@ test("filtros de data de São Paulo, consentimento tardio e rate limit", async (
     429,
   );
 });
+
+test("limpar histórico zera todos os registros, visitantes, encaminhamentos e contadores no painel", async (t) => {
+  const s = await setup(t);
+  const a = await s.add("Carlos", "11999994444");
+  const c1 = await s.visitor();
+  await s.route(c1);
+  const c2 = await s.visitor();
+  await s.route(c2);
+
+  let stats = (await s.admin("stats?period=total")).data;
+  assert.equal(stats.totals.total, 2);
+  assert.equal(stats.agents.find((x) => x.id === a.id).deliveries, 2);
+
+  const clearRes = await s.admin("clear-history", "POST", {});
+  assert.equal(clearRes.status, 200);
+  assert.equal(clearRes.data.ok, true);
+
+  stats = (await s.admin("stats?period=total")).data;
+  assert.equal(stats.totals.total, 0);
+  assert.equal(stats.totals.today, 0);
+  assert.equal(stats.agents.find((x) => x.id === a.id).deliveries, 0);
+  assert.equal(stats.agents.find((x) => x.id === a.id).new_clients, 0);
+  assert.equal((await s.db.prepare("SELECT COUNT(*) n FROM visitors").first()).n, 0);
+  assert.equal((await s.db.prepare("SELECT COUNT(*) n FROM deliveries").first()).n, 0);
+});
