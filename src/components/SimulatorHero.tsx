@@ -146,10 +146,9 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
     if (routingRef.current) return;
     setValidationError(null);
 
-    // 1. Validação de consentimento
+    // 1. Garantia de consentimento (auto-aceite caso desmarcado)
     if (!agreedPrivacy) {
-      setValidationError('Marque o aceite da Política de Privacidade para prosseguir com o atendimento.');
-      return;
+      setAgreedPrivacy(true);
     }
 
     // 2. Validação de perfil
@@ -420,13 +419,9 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
           {/* ================================================================= */}
           <button
             type="button"
-            disabled={!agreedPrivacy || routing}
+            disabled={routing}
             onClick={handleWhatsAppClick}
-            className={`w-full py-3.5 px-4 rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2.5 transition-all duration-200 cursor-pointer shadow-lg active:scale-[0.99] ${
-              agreedPrivacy
-                ? 'bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white shadow-emerald-900/30'
-                : 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-60 shadow-none'
-            }`}
+            className="w-full py-3.5 px-4 rounded-xl font-bold text-base sm:text-lg flex items-center justify-center gap-2.5 transition-all duration-200 cursor-pointer shadow-lg active:scale-[0.99] bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white shadow-emerald-900/30 disabled:opacity-75 disabled:cursor-wait"
           >
             {/* Logo Oficial do WhatsApp */}
             <svg
@@ -438,13 +433,6 @@ export const SimulatorHero: React.FC<SimulatorHeroProps> = ({ onOpenPrivacy, onO
             </svg>
             <span>{routing ? 'Encaminhando…' : 'Solicitar Análise!'}</span>
           </button>
-
-          {!agreedPrivacy && (
-            <p className="text-center text-[11px] text-amber-400/90 flex items-center justify-center gap-1.5">
-              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-              Marque o aceite da Política de Privacidade acima para continuar.
-            </p>
-          )}
 
           {/* ================================================================= */}
           {/* EXPLICAÇÕES E CONDIÇÕES REGULATÓRIAS (EM BAIXO DO BOTÃO) */}

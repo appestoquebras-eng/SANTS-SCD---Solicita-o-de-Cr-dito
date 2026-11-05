@@ -6,10 +6,35 @@ import {defineConfig} from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+function devApiPlugin() {
+  return {
+    name: 'dev-api-fallback',
+    configureServer(server: any) {
+      server.middlewares.use((req: any, res: any, next: any) => {
+        if (req.url?.startsWith('/api/visitor')) {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ ready: true }));
+          return;
+        }
+        if (req.url?.startsWith('/api/route') && req.method === 'POST') {
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({
+            phone: '5511962433641',
+            eventId: 'dev-' + Date.now(),
+            trackContact: false,
+          }));
+          return;
+        }
+        next();
+      });
+    },
+  };
+}
+
 export default defineConfig(() => {
   return {
     base: '/',
-    plugins: [react(), tailwindcss()],
+    plugins: [react(), tailwindcss(), devApiPlugin()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
