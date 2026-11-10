@@ -6,15 +6,24 @@ export default function AttendantRedirect() {
   const [href, setHref] = useState("");
   const [statusText, setStatusText] = useState("Conectando ao WhatsApp...");
   const opening = useRef(false);
+  const redirectPromiseRef = useRef<Promise<string> | null>(null);
 
   const redirectToWhatsApp = (targetHref: string) => {
-    if (opening.current) return;
+    if (opening.current || !targetHref) return;
     opening.current = true;
     try {
       window.location.replace(targetHref);
     } catch {
       window.location.assign(targetHref);
     }
+  };
+
+  const getFallbackHref = () => {
+    const rawOfficial = getActiveWhatsAppNumber().replace(/\D/g, "") || "5511962433641";
+    const officialPhone = (rawOfficial.length === 10 || rawOfficial.length === 11) && !rawOfficial.startsWith("55")
+      ? "55" + rawOfficial
+      : rawOfficial;
+    return `https://wa.me/${officialPhone}?text=${encodeURIComponent(handoffMessage())}`;
   };
 
   useEffect(() => {
@@ -24,47 +33,69 @@ export default function AttendantRedirect() {
     loadPixel();
     let alive = true;
 
-    // Número oficial de contingência com sanitização DDI 55
-    const rawOfficial = getActiveWhatsAppNumber().replace(/\D/g, "") || "5511962433641";
-    const officialPhone = (rawOfficial.length === 10 || rawOfficial.length === 11) && !rawOfficial.startsWith("55")
-      ? "55" + rawOfficial
-      : rawOfficial;
-    const fallbackHref = `https://wa.me/${officialPhone}?text=${encodeURIComponent(handoffMessage())}`;
-
-    // Disponibiliza o link imediatamente para caso o usuário toque na hora
-    setHref(fallbackHref);
-
-    (async () => {
-      let finalHref = fallbackHref;
+    const performRouting = async (): Promise<string> => {
+      let targetHref = "";
       try {
         const data = await assignAttendant();
-        if (!alive) return;
-        finalHref = data.href;
-        setHref(finalHref);
-        setStatusText("Abrindo seu WhatsApp...");
-        trackAttendantEntry(data).catch(() => {});
+        targetHref = data.href;
+        if (alive) {
+          setHref(targetHref);
+          setStatusText("Abrindo seu WhatsApp...");
+        }
+
+        // Aguarda envio do pixel com limite razoável (máximo 2.5s) para não interromper o evento nem travar o atendimento
+        await Promise.race([
+          trackAttendantEntry(data).then(
+            () => new Promise<void>((resolve) => setTimeout(resolve, 100)),
+          ),
+          new Promise<void>((resolve) => setTimeout(resolve, 2500)),
+        ]);
       } catch (err) {
         console.warn("Roteamento backend indisponível ou sem atendente ativo, usando WhatsApp oficial:", err);
-        setStatusText("Redirecionando para o WhatsApp oficial da SANTS...");
+        targetHref = getFallbackHref();
+        if (alive) {
+          setHref(targetHref);
+          setStatusText("Redirecionando para o WhatsApp oficial da SANTS...");
+        }
       }
+      return targetHref;
+    };
 
-      if (alive) {
-        redirectToWhatsApp(finalHref);
-      }
-    })();
+    const routingPromise = performRouting();
+    redirectPromiseRef.current = routingPromise;
 
-    // Garantia de segurança contra bloqueadores de redirecionamento automático
-    const timer = setTimeout(() => {
-      if (alive && !opening.current && href) {
-        redirectToWhatsApp(href);
+    routingPromise.then((target) => {
+      if (alive && target) {
+        redirectToWhatsApp(target);
       }
-    }, 1200);
+    });
 
     return () => {
       alive = false;
-      clearTimeout(timer);
     };
   }, []);
+
+  const handleManualClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (opening.current) return;
+    setStatusText("Abrindo seu WhatsApp...");
+
+    if (redirectPromiseRef.current) {
+      try {
+        const target = await redirectPromiseRef.current;
+        if (target) {
+          redirectToWhatsApp(target);
+          return;
+        }
+      } catch {}
+    }
+
+    if (href) {
+      redirectToWhatsApp(href);
+    } else {
+      redirectToWhatsApp(getFallbackHref());
+    }
+  };
 
   return (
     <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center px-4 py-8">
@@ -76,14 +107,22 @@ export default function AttendantRedirect() {
           {statusText} Sua mensagem com os dados da simulação está pronta para envio.
         </p>
 
-        {href && (
+        {href ? (
           <a
             href={href}
-            onClick={() => { opening.current = true; }}
-            className="block w-full rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 px-5 py-4 text-slate-950 font-bold transition-all shadow-lg text-base"
+            onClick={handleManualClick}
+            className="block w-full rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 px-5 py-4 text-slate-950 font-bold transition-all shadow-lg text-base cursor-pointer"
           >
             Abrir WhatsApp Agora
           </a>
+        ) : (
+          <button
+            type="button"
+            onClick={handleManualClick}
+            className="block w-full rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 px-5 py-4 text-slate-950 font-bold transition-all shadow-lg text-base cursor-pointer"
+          >
+            Abrir WhatsApp Agora
+          </button>
         )}
 
         <p className="text-xs text-slate-400 mt-3">
