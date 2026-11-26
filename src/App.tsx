@@ -10,8 +10,10 @@ import { MeasurementConsent } from './components/MeasurementConsent';
 const AttendantPanel = lazy(() => import('./components/AttendantPanel'));
 const AttendantRedirect = lazy(() => import('./components/AttendantRedirect'));
 export default function App() {
-  if (/^\/painel(?:\/|$)/.test(location.pathname)) return <Suspense fallback={<p>Carregando painel…</p>}><AttendantPanel /></Suspense>;
-  if (/^\/atendente\/?$/.test(location.pathname)) return <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white"><p>Conectando ao atendimento…</p></div>}><AttendantRedirect /></Suspense>;
+  if (/^\/painel2(?:\/|$)/i.test(location.pathname)) return <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white"><p>Carregando painel…</p></div>}><AttendantPanel team={2} /></Suspense>;
+  if (/^\/painel(?:\/|$)/i.test(location.pathname)) return <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white"><p>Carregando painel…</p></div>}><AttendantPanel team={1} /></Suspense>;
+  if (/^\/atendimento\/?$/i.test(location.pathname)) return <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white"><p>Conectando ao atendimento…</p></div>}><AttendantRedirect team={2} /></Suspense>;
+  if (/^\/atendente\/?$/i.test(location.pathname)) return <Suspense fallback={<div className="min-h-screen bg-slate-900 flex items-center justify-center text-white"><p>Conectando ao atendimento…</p></div>}><AttendantRedirect team={1} /></Suspense>;
   return <Landing />;
 }
 import { Header } from './components/Header';

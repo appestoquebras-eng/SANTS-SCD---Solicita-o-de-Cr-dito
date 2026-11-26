@@ -2,8 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { assignAttendant, handoffMessage, loadPixel, trackAttendantEntry } from "../utils/atendimento";
 import { getActiveWhatsAppNumber } from "../config/creditConfig";
 
-export default function AttendantRedirect() {
+export default function AttendantRedirect({ team = 1 }: { team?: 1 | 2 }) {
   const [href, setHref] = useState("");
+  const [error, setError] = useState("");
+  const [attempt, setAttempt] = useState(0);
   const [statusText, setStatusText] = useState("Conectando ao WhatsApp...");
   const opening = useRef(false);
   const redirectPromiseRef = useRef<Promise<string> | null>(null);
@@ -29,14 +31,19 @@ export default function AttendantRedirect() {
   useEffect(() => {
     document.title = "Conectando ao atendimento | SANTS";
     document.querySelector('meta[name="robots"]')?.setAttribute("content", "noindex,nofollow");
-    document.querySelector('link[rel="canonical"]')?.setAttribute("href", location.origin + "/atendente");
+    document
+      .querySelector('link[rel="canonical"]')
+      ?.setAttribute("href", location.origin + (team === 2 ? "/atendimento" : "/atendente"));
     loadPixel();
     let alive = true;
+    opening.current = false;
+    setError("");
+    setStatusText("Conectando ao WhatsApp...");
 
     const performRouting = async (): Promise<string> => {
       let targetHref = "";
       try {
-        const data = await assignAttendant();
+        const data = await assignAttendant(team);
         targetHref = data.href;
         if (alive) {
           setHref(targetHref);
@@ -51,6 +58,17 @@ export default function AttendantRedirect() {
           new Promise<void>((resolve) => setTimeout(resolve, 2500)),
         ]);
       } catch (err) {
+        if (team === 2) {
+          const message =
+            err instanceof Error
+              ? err.message
+              : "Nenhum atendente disponível no momento. Tente novamente em instantes.";
+          if (alive) {
+            setHref("");
+            setError(message);
+          }
+          return "";
+        }
         console.warn("Roteamento backend indisponível ou sem atendente ativo, usando WhatsApp oficial:", err);
         targetHref = getFallbackHref();
         if (alive) {
@@ -73,7 +91,7 @@ export default function AttendantRedirect() {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [team, attempt]);
 
   const handleManualClick = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -92,7 +110,7 @@ export default function AttendantRedirect() {
 
     if (href) {
       redirectToWhatsApp(href);
-    } else {
+    } else if (team === 1) {
       redirectToWhatsApp(getFallbackHref());
     }
   };
@@ -101,33 +119,49 @@ export default function AttendantRedirect() {
     <main className="min-h-screen bg-slate-900 text-white flex items-center justify-center px-4 py-8">
       <section className="w-full max-w-md rounded-2xl border border-white/10 bg-slate-800 p-6 sm:p-8 text-center shadow-2xl">
         <p className="text-xs font-bold tracking-widest text-blue-400 mb-4 uppercase">SANTS SCD</p>
-        <div aria-hidden="true" className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-3 border-slate-600 border-t-emerald-400" />
-        <h1 className="text-xl sm:text-2xl font-bold mb-2">Redirecionando para o WhatsApp</h1>
-        <p role="status" aria-live="polite" className="text-sm text-slate-300 leading-relaxed mb-6">
-          {statusText} Sua mensagem com os dados da simulação está pronta para envio.
+        {!error && (
+          <div aria-hidden="true" className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-3 border-slate-600 border-t-emerald-400" />
+        )}
+        <h1 className="text-xl sm:text-2xl font-bold mb-2">
+          {error ? "Não conseguimos conectar agora" : "Redirecionando para o WhatsApp"}
+        </h1>
+        <p role={error ? "alert" : "status"} aria-live="polite" className="text-sm text-slate-300 leading-relaxed mb-6">
+          {error || `${statusText} Sua mensagem com os dados da simulação está pronta para envio.`}
         </p>
 
-        {href ? (
-          <a
-            href={href}
-            onClick={handleManualClick}
-            className="block w-full rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 px-5 py-4 text-slate-950 font-bold transition-all shadow-lg text-base cursor-pointer"
-          >
-            Abrir WhatsApp Agora
-          </a>
-        ) : (
-          <button
-            type="button"
-            onClick={handleManualClick}
-            className="block w-full rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 px-5 py-4 text-slate-950 font-bold transition-all shadow-lg text-base cursor-pointer"
-          >
-            Abrir WhatsApp Agora
-          </button>
+        {!error && (
+          href ? (
+            <a
+              href={href}
+              onClick={handleManualClick}
+              className="block w-full rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 px-5 py-4 text-slate-950 font-bold transition-all shadow-lg text-base cursor-pointer"
+            >
+              Abrir WhatsApp Agora
+            </a>
+          ) : (
+            <button
+              type="button"
+              onClick={handleManualClick}
+              className="block w-full rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 px-5 py-4 text-slate-950 font-bold transition-all shadow-lg text-base cursor-pointer"
+            >
+              Abrir WhatsApp Agora
+            </button>
+          )
         )}
 
-        <p className="text-xs text-slate-400 mt-3">
-          Se o aplicativo não abrir automaticamente, toque no botão verde acima.
-        </p>
+        {error ? (
+          <button
+            type="button"
+            onClick={() => setAttempt((v) => v + 1)}
+            className="block w-full rounded-xl bg-blue-600 hover:bg-blue-500 px-5 py-4 text-white font-bold transition-all shadow-lg text-base cursor-pointer"
+          >
+            Tentar novamente
+          </button>
+        ) : (
+          <p className="text-xs text-slate-400 mt-3">
+            Se o aplicativo não abrir automaticamente, toque no botão verde acima.
+          </p>
+        )}
 
         <a href="/#simulador" className="inline-block mt-6 text-xs text-slate-400 hover:text-white underline transition-colors">
           ← Voltar e ajustar simulação

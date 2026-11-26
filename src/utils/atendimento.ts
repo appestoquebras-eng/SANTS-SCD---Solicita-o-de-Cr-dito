@@ -1,5 +1,5 @@
 export const PIXEL_ID = "DBD3NDBC77U0QK5QBER0";
-export const isPanel = () => /^\/painel(?:\/|$)/.test(location.pathname);
+export const isPanel = () => /^\/painel2?(?:\/|$)/i.test(location.pathname);
 declare global {
   interface Window {
     ttq?: any;
@@ -137,7 +137,7 @@ export function handoffMessage() {
   return fallback;
 }
 
-let assignment: Promise<{ href: string; trackContact: boolean; eventId: string }> | undefined;
+const assignments: Record<number, Promise<{ href: string; trackContact: boolean; eventId: string }> | undefined> = {};
 export function handoffId() {
   const url = new URL(location.href);
   const existing = url.searchParams.get("atendimento");
@@ -147,11 +147,12 @@ export function handoffId() {
   history.replaceState(null, "", url.pathname + url.search + url.hash);
   return id;
 }
-export function assignAttendant() {
-  if (!assignment) assignment = (async () => {
+export function assignAttendant(team: 1 | 2 = 1) {
+  if (!assignments[team]) assignments[team] = (async () => {
     const handoff = handoffId();
     await initVisitor();
-    const data = await api("route", "POST", { analytics: analyticsAllowed(), handoffId: handoff });
+    const routePath = team === 2 ? "2/route" : "route";
+    const data = await api(routePath, "POST", { analytics: analyticsAllowed(), handoffId: handoff });
     let phone = String(data.phone || "").replace(/\D/g, "");
     if ((phone.length === 10 || phone.length === 11) && !phone.startsWith("55")) {
       phone = "55" + phone;
@@ -160,8 +161,8 @@ export function assignAttendant() {
       throw new Error("Número de atendimento inválido.");
     return { href: "https://wa.me/" + phone + "?text=" + encodeURIComponent(handoffMessage()),
       trackContact: data.trackContact === true, eventId: data.eventId };
-  })().catch((error) => { assignment = undefined; throw error; });
-  return assignment;
+  })().catch((error) => { assignments[team] = undefined; throw error; });
+  return assignments[team]!;
 }
 
 export async function trackAttendantEntry(data: { trackContact: boolean; eventId: string }) {

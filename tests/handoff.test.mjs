@@ -75,3 +75,17 @@ test("falha de atendimento pode ser tentada novamente sem inventar número", asy
   const result = await s.api.assignAttendant();
   assert.equal(new URL(result.href).hostname, "wa.me");
 });
+
+test("equipe 2 (/painel2 e /atendimento) bloqueia pixel no painel e roteia via /api/2/route", async () => {
+  const s = browser();
+  s.context.location.pathname = "/painel2";
+  assert.equal(s.api.isPanel(), true);
+  assert.equal(s.api.analyticsAllowed(), false);
+
+  s.context.location.pathname = "/atendimento";
+  s.context.location.href = "https://santscreditoltda.online/atendimento";
+  assert.equal(s.api.isPanel(), false);
+  const res = await s.api.assignAttendant(2);
+  assert.equal(new URL(res.href).hostname, "wa.me");
+  assert.ok(s.calls.some((c) => c.url === "/api/2/route"));
+});

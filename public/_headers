@@ -6,9 +6,18 @@
 /painel*
   X-Robots-Tag: noindex, nofollow
   Cache-Control: no-store
+
+/painel2*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
 /api/*
   Cache-Control: no-store
 
 /atendente*
+  X-Robots-Tag: noindex, nofollow
+  Cache-Control: no-store
+
+/atendimento*
   X-Robots-Tag: noindex, nofollow
   Cache-Control: no-store

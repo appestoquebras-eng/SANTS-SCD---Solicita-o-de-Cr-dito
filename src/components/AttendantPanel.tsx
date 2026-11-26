@@ -27,9 +27,13 @@ function formatDisplayPhone(p: string) {
   }
   return p ? `+${digits}` : "";
 }
-export default function AttendantPanel() {
+export default function AttendantPanel({ team = 1 }: { team?: 1 | 2 }) {
+  const apiPrefix = team === 2 ? "2/" : "";
   const [token, setToken] = useState(""),
     [password, setPassword] = useState(""),
+    [confirmPassword, setConfirmPassword] = useState(""),
+    [needsSetup, setNeedsSetup] = useState(false),
+    [checkingAuth, setCheckingAuth] = useState(team === 2),
     [error, setError] = useState(""),
     [notice, setNotice] = useState(""),
     [busy, setBusy] = useState(false);
@@ -42,7 +46,7 @@ export default function AttendantPanel() {
     [phone, setPhone] = useState("");
   const request = async (path: string, method = "GET", data?: unknown) => {
     try {
-      return await api("admin/" + path, method, data, token);
+      return await api(apiPrefix + "admin/" + path, method, data, token);
     } catch (e: any) {
       if (e.status === 401) {
         setToken("");
@@ -62,11 +66,36 @@ export default function AttendantPanel() {
     setStats(totals);
   };
   useEffect(() => {
-    document.title = "Painel de atendentes | SANTS";
+    document.title =
+      team === 2
+        ? "Painel de atendentes — Equipe 2 | SANTS"
+        : "Painel de atendentes | SANTS";
     document
       .querySelector('meta[name="robots"]')
       ?.setAttribute("content", "noindex,nofollow");
-  }, []);
+  }, [team]);
+  useEffect(() => {
+    if (team !== 2) {
+      setCheckingAuth(false);
+      setNeedsSetup(false);
+      return;
+    }
+    let alive = true;
+    setCheckingAuth(true);
+    api("2/auth-status")
+      .then((res) => {
+        if (alive) setNeedsSetup(res?.needsSetup === true);
+      })
+      .catch((e: any) => {
+        if (alive) setError(e.message);
+      })
+      .finally(() => {
+        if (alive) setCheckingAuth(false);
+      });
+    return () => {
+      alive = false;
+    };
+  }, [team]);
   useEffect(() => {
     if (!token) return;
     let alive = true;
@@ -146,8 +175,16 @@ export default function AttendantPanel() {
             <div className="panel-brand">
               SANTS <span>SCD</span>
             </div>
-            <h1>Painel de atendentes</h1>
-            <p>Distribuição de encaminhamentos para o WhatsApp</p>
+            <h1>
+              {team === 2
+                ? "Painel de atendentes — Equipe 2"
+                : "Painel de atendentes"}
+            </h1>
+            <p>
+              {team === 2
+                ? "Distribuição independente de encaminhamentos para /atendimento"
+                : "Distribuição de encaminhamentos para o WhatsApp"}
+            </p>
           </div>
           {token && (
             <div className="panel-header-actions">
@@ -187,39 +224,130 @@ export default function AttendantPanel() {
           </div>
         )}
         {!token ? (
-          <form
-            className="panel-card panel-login"
-            onSubmit={(e) => {
-              e.preventDefault();
-              run(async () => {
-                const data = await api("login", "POST", { password });
-                setPassword("");
-                setToken(data.token);
-              });
-            }}
-          >
-            <h2>Acesso restrito</h2>
-            <p>
-              Informe a senha para entrar. Ela será solicitada novamente ao
-              abrir ou recarregar esta página.
-            </p>
-            <label>
-              Senha
-              <input
-                autoComplete="current-password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                maxLength={128}
-              />
-            </label>
-            <button className="primary" disabled={busy}>
-              {busy ? "Entrando…" : "Entrar"}
-            </button>
-          </form>
+          checkingAuth ? (
+            <div className="panel-card panel-login">
+              <h2>Carregando…</h2>
+              <p>Verificando configuração de acesso do painel.</p>
+            </div>
+          ) : needsSetup ? (
+            <form
+              className="panel-card panel-login"
+              onSubmit={(e) => {
+                e.preventDefault();
+                run(async () => {
+                  if (password.length < 4)
+                    throw new Error(
+                      "Informe uma senha com pelo menos 4 caracteres.",
+                    );
+                  if (password !== confirmPassword)
+                    throw new Error("As senhas não conferem.");
+                  const data = await api("2/setup", "POST", { password });
+                  setPassword("");
+                  setConfirmPassword("");
+                  setNeedsSetup(false);
+                  setToken(data.token);
+                  setNotice("Senha do Painel 2 configurada com sucesso.");
+                });
+              }}
+            >
+              <h2>Configurar senha — Painel 2</h2>
+              <p>
+                Primeiro acesso: defina a senha deste painel. Ela ficará salva
+                no servidor com criptografia e será solicitada ao abrir ou
+                recarregar a página.
+              </p>
+              <label>
+                Nova senha
+                <input
+                  autoComplete="new-password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  minLength={4}
+                  maxLength={128}
+                />
+              </label>
+              <label style={{ marginTop: 12 }}>
+                Confirmar senha
+                <input
+                  autoComplete="new-password"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  minLength={4}
+                  maxLength={128}
+                />
+              </label>
+              <button className="primary" disabled={busy}>
+                {busy ? "Salvando…" : "Definir senha e entrar"}
+              </button>
+            </form>
+          ) : (
+            <form
+              className="panel-card panel-login"
+              onSubmit={(e) => {
+                e.preventDefault();
+                run(async () => {
+                  const data = await api(apiPrefix + "login", "POST", {
+                    password,
+                  });
+                  setPassword("");
+                  setToken(data.token);
+                });
+              }}
+            >
+              <h2>Acesso restrito</h2>
+              <p>
+                Informe a senha para entrar. Ela será solicitada novamente ao
+                abrir ou recarregar esta página.
+              </p>
+              <label>
+                Senha
+                <input
+                  autoComplete="current-password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  maxLength={128}
+                />
+              </label>
+              <button className="primary" disabled={busy}>
+                {busy ? "Entrando…" : "Entrar"}
+              </button>
+            </form>
+          )
         ) : (
           <>
+            {team === 2 && (
+              <section className="panel-card">
+                <div className="panel-row">
+                  <div>
+                    <h2>Link de direcionamento desta equipe</h2>
+                    <p style={{ margin: "4px 0 0" }}>
+                      Use <strong>{location.origin}/atendimento</strong> para
+                      encaminhar clientes diretamente para os atendentes
+                      cadastrados abaixo.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard
+                        ?.writeText(location.origin + "/atendimento")
+                        .then(() =>
+                          setNotice("Link /atendimento copiado!"),
+                        )
+                        .catch(() => {});
+                    }}
+                  >
+                    Copiar link /atendimento
+                  </button>
+                </div>
+              </section>
+            )}
             <div className="panel-section-header">
               <div>
                 <h2>Métricas e registros</h2>

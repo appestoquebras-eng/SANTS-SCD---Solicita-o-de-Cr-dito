@@ -13,9 +13,12 @@ const source = await build({
   format: "esm",
   platform: "browser",
 });
-const schema = (
-  await readFile("migrations/0001_atendimento.sql", "utf8")
-).replace(/--[^\n]*/g, "");
+const schema = [
+  await readFile("migrations/0001_atendimento.sql", "utf8"),
+  await readFile("migrations/0002_equipe2.sql", "utf8"),
+]
+  .join("\n")
+  .replace(/--[^\n]*/g, "");
 
 test("cookie de visitante usa somente o domínio correspondente, com raiz e www", async (t) => {
   const { mf } = await setup(t);
@@ -47,7 +50,7 @@ function statements(text) {
   }
   return result;
 }
-async function setup(t) {
+async function setup(t, extraBindings = {}) {
   const mf = new Miniflare({
     workers: [
       {
@@ -56,7 +59,7 @@ async function setup(t) {
         script: source.outputFiles[0].text,
         compatibilityDate: "2026-08-01",
         d1Databases: ["DB"],
-        bindings: { ADMIN_PASSWORD: "test-only-password" },
+        bindings: { ADMIN_PASSWORD: "test-only-password", ...extraBindings },
       },
     ],
   });
@@ -330,3 +333,123 @@ test("limpar histórico zera todos os registros, visitantes, encaminhamentos e c
   assert.equal((await s.db.prepare("SELECT COUNT(*) n FROM visitors").first()).n, 0);
   assert.equal((await s.db.prepare("SELECT COUNT(*) n FROM deliveries").first()).n, 0);
 });
+
+test("painel2 e /atendimento: primeiro acesso, isolamento de sessão, rodízio independente e limpeza separada", async (t) => {
+  const s = await setup(t);
+  // Antes da configuração, auth-status indica setup necessário
+  const statusBefore = await s.call("2/auth-status");
+  assert.equal(statusBefore.status, 200);
+  assert.equal(statusBefore.data.needsSetup, true);
+
+  // Tenta login antes do setup
+  assert.equal(
+    (await s.call("2/login", { method: "POST", body: { password: "test-panel2-pass" } })).status,
+    503,
+  );
+
+  // Define a senha inicial via /api/2/setup (armazenada com PBKDF2)
+  const setupRes = await s.call("2/setup", {
+    method: "POST",
+    body: { password: "test-panel2-pass" },
+  });
+  assert.equal(setupRes.status, 200);
+  assert.ok(setupRes.data.token);
+
+  // Não permite re-configurar o setup depois de definido
+  assert.equal(
+    (await s.call("2/setup", { method: "POST", body: { password: "outra" } })).status,
+    409,
+  );
+
+  const statusAfter = await s.call("2/auth-status");
+  assert.equal(statusAfter.data.configured, true);
+  assert.equal(statusAfter.data.needsSetup, false);
+
+  // Login no Painel 2 com senha configurada
+  assert.equal(
+    (await s.call("2/login", { method: "POST", body: { password: "errada" } })).status,
+    401,
+  );
+  const login2 = await s.call("2/login", {
+    method: "POST",
+    body: { password: "test-panel2-pass" },
+  });
+  assert.equal(login2.status, 200);
+  const token2 = login2.data.token;
+
+  // Isolamento de sessão entre Painel 1 e Painel 2
+  assert.equal((await s.call("2/admin/config", { token: s.token })).status, 401);
+  assert.equal((await s.call("admin/config", { token: token2 })).status, 401);
+
+  const admin2 = (path, method = "GET", body) =>
+    s.call("2/admin/" + path, { method, body, token: token2 });
+
+  // Cadastra atendente na equipe 1 e outros na equipe 2 (mesmo telefone não conflita entre equipes)
+  const a1 = await s.add("Equipe1", "11999990001");
+  await admin2("agents", "POST", { name: "Equipe2 A", phone: "11999990002" });
+  await admin2("agents", "POST", { name: "Equipe2 B", phone: "553190915057" });
+  const cfg2 = (await admin2("config")).data;
+  assert.equal(cfg2.agents.length, 2);
+
+  // /api/2/route sem afetar /api/route e vice-versa
+  const v = await s.visitor();
+  const r1 = await s.call("route", {
+    method: "POST",
+    cookie: v,
+    body: { analytics: true, handoffId: crypto.randomUUID() },
+  });
+  assert.equal(r1.data.phone, a1.phone);
+
+  const h2a = crypto.randomUUID();
+  const r2a = await s.call("2/route", {
+    method: "POST",
+    cookie: v,
+    body: { analytics: true, handoffId: h2a },
+  });
+  assert.equal(r2a.status, 200);
+  assert.equal(r2a.data.phone, "5511999990002");
+  assert.equal(r2a.data.trackContact, true);
+
+  // Recarregar mesma chave no /atendimento não avança fila nem duplica Lead
+  const r2aDup = await s.call("2/route", {
+    method: "POST",
+    cookie: v,
+    body: { analytics: true, handoffId: h2a },
+  });
+  assert.equal(r2aDup.data.phone, "5511999990002");
+  assert.equal(r2aDup.data.trackContact, false);
+
+  // Próximo clique no /atendimento vai para o segundo atendente da equipe 2
+  const r2b = await s.call("2/route", {
+    method: "POST",
+    cookie: v,
+    body: { analytics: true, handoffId: crypto.randomUUID() },
+  });
+  assert.equal(r2b.data.phone, "553190915057");
+
+  // Limpar histórico do Painel 2 zera apenas a equipe 2
+  await admin2("clear-history", "POST", {});
+  const stats1 = (await s.admin("stats?period=total")).data;
+  const stats2 = (await admin2("stats?period=total")).data;
+  assert.equal(stats1.totals.total, 1);
+  assert.equal(stats2.totals.total, 0);
+});
+
+test("painel2 com segredo ADMIN_PASSWORD_2 no servidor sobrescreve setup", async (t) => {
+  const s = await setup(t, { ADMIN_PASSWORD_2: "env-secret-2" });
+  const status = await s.call("2/auth-status");
+  assert.equal(status.data.configured, true);
+  assert.equal(status.data.needsSetup, false);
+  assert.equal(status.data.source, "env");
+  assert.equal(
+    (await s.call("2/setup", { method: "POST", body: { password: "outro" } })).status,
+    409,
+  );
+  const login = await s.call("2/login", {
+    method: "POST",
+    body: { password: "env-secret-2" },
+  });
+  assert.equal(login.status, 200);
+  assert.ok(login.data.token);
+});
+
